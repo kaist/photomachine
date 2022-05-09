@@ -211,7 +211,7 @@ class App:
         self.plug_q={}
         self.all_process=[]
         for plug in self.plug_actions:
-                q=self.manager.Queue(maxsize=10)
+                q=self.manager.Queue(maxsize=5)
                 self.plug_q[plug.id]=q
 
         for work in self.plug_actions:
@@ -263,6 +263,7 @@ class App:
             ram+=x.memory_info()[0]
         ram=int(ram/1024/1024)
         cpu=psutil.cpu_percent(interval=None)
+        self.gui.update_pstext(cpu,ram)
 
 
     def dispatcher(self):

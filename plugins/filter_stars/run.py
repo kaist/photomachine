@@ -24,9 +24,6 @@ def run(store,settings,image,vars):
         bl=rating<int(settings['rating'])
     if bl:
         msg='Approved:\n'+Path(vars['filename']).name
-        if not vars['loaded'] and settings['load']:
-            image=Image.open(vars['filename'])
-            vars['loaded']=True
         return image,vars,msg
     else:
         msg='Skip:\n'+Path(vars['filename']).name

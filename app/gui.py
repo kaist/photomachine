@@ -234,10 +234,18 @@ class Gui:
         Button(self.session_frame,text=_('Save As...'),command=self.save_as_state,image=icons.save_as,compound='left').pack(side=LEFT,padx=5,pady=5)        
         Button(self.session_frame,text=_('Open'),command=self.load_state,image=icons.open_file,compound='left').pack(side=LEFT,padx=5,pady=5)  
 
+        misc_frame=Frame(self.top_frame)
+        misc_frame.pack(padx=5,pady=5,side=LEFT)
+        self.ps_label=Label(misc_frame,wraplength=200)
+        self.ps_label.pack(padx=5,pady=5)
+
         act_frame=Labelframe(self.top_frame,text=_('Run')) 
         self.start_but=Button(act_frame,text=_('Start'),image=icons.play,compound='left',width=7,command=self.startstop)
         self.start_but.pack(side=RIGHT,padx=5,pady=5)
         act_frame.pack(padx=5,pady=5,side=RIGHT)
+
+
+
 
         self.nb=Notebook(self.root)
         self.nb.pack(padx=5,pady=5,side=BOTTOM,fill=X)
@@ -332,7 +340,12 @@ class Gui:
 
         self.root.after(1000,self.update_ps)
         self.root.after(1500,self.dis_splash)
-        
+  
+
+    def update_pstext(self,cpu,mem):
+        self.ps_label['text']=f'CPU load:{cpu}%\nMemory load:{mem}'
+
+
     def dis_splash(self,event=None):
         try:
             import pyi_splash

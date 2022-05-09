@@ -9,3 +9,4 @@ Clear now=Очистить сейчас
 Read the folder once=Прочитать папку один раз
 Monitor the folder at intervals (sec)=Следить за папкой с интервалом (сек)
 Delete the original=Удалять исходные
+(If this is installed, dont forget to add the "Load Source Image" plugin before actions that modify or save the image.)=(Если это установлено, не забудьте добавить плагин "Загрузить исходное изображение" до действий, которые изменяют или сохраняют изображение.)

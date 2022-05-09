@@ -23,10 +23,7 @@ class Plugin:
         self.rat_combo.grid(row=0,column=2,columnspan=1,padx=5,pady=5,sticky=W)
         self.rat_combo['values']=rts
 
-        self.load_var=BooleanVar()
-        self.load_var.set(plug.settings.get('load',1))
-        rc=Checkbutton(frame, text=_("Load approved photos if not loaded"),variable=self.load_var,onvalue=1,offvalue=0)
-        rc.grid(row=1,column=0,columnspan=3,padx=5,pady=5,sticky=W)   
+
 
 
 
@@ -35,8 +32,6 @@ class Plugin:
         d={}
         d['rating']=self.rat_combo.current()
         d['if']=self.if_combo.current()
-        d['load']=int(self.load_var.get())
-        #d['autoclean']=self.auto_var.get()
         return d
 
 

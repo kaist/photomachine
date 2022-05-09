@@ -1,0 +1,2 @@
+[LANG]
+Load Source Image=Загрузить исходное изобр.
