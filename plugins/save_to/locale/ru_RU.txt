@@ -1,0 +1,4 @@
+[LANG]
+Save to disk=Сохранить на диск
+Select folder=Выбрать папку
+Format=Формат

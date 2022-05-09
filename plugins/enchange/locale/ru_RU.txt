@@ -1,0 +1,4 @@
+[LANG]
+Sharpness=Резкость
+Image Settings=Настройки изображения
+

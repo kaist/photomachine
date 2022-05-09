@@ -1,0 +1,222 @@
+<html>
+  <head>
+  <meta charset="UTF-8"/>
+  <title id="title"></title>
+  <base href="/"> 
+  
+  <link rel="stylesheet" type="text/css" href="static/slick.css"/>
+  
+  <style>
+  
+html,body {
+  font-family: 'Roboto', sans-serif;
+}
+  button {
+  z-index: 102;
+}
+section {
+  position: relative;
+  background: #FAFAFA;
+  
+}
+
+
+.slick-slide {
+  transform: scale(1);
+  opacity: .5;
+  transition: .3s ease-in-out all;
+  padding:  10px;
+}
+.slick-slide.slick-center {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+
+
+.img-box {
+  padding: 0;
+  img {
+    width: 100%;
+  }
+}
+
+.wrap{
+  height:70%;
+  padding:20px;
+  margin:40px;
+ 
+  background-color:white;
+  -webkit-box-shadow: 0px 0px 26px -1px rgba(0,0,0,0.56);
+  -moz-box-shadow: 0px 0px 26px -1px rgba(0,0,0,0.56);
+   box-shadow: 0px 0px 26px -1px rgba(0,0,0,0.56);
+}
+.wrap img {
+  height:80%;
+  margin: auto;
+}
+.wrap .capt{
+}
+.capt {
+}
+
+.capt img {
+  height:55px;
+  float:left;
+  
+}
+.capt span {
+
+}
+
+article {
+  border: 1px solid;
+  float: left;
+  margin: 50px 15px;
+  font-size: 0.8vw;
+}
+h1 {
+  font-size: 2vw;
+}
+
+
+.navbartop {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    
+    z-index: 9999;
+    
+    font-size:xx-large; 
+}
+
+.navbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+    
+    z-index: 999;
+    
+    font-size:xx-large; 
+    
+}
+  </style>
+  </head>
+  <body>
+
+
+<div style="" id="nav" class="navbartop">
+    <div class="bottomtext"><img id="logotop" style="margin-top:00px;max-height: 55px; vertical-align: top;" src=""/><span id="text1" style="padding-left:10px; vertical-align: middle;"><span></div>
+ 
+</div>
+
+
+  <div style="padding-top:70px;padding-bottom:50px;" class="your-class">
+ 
+    
+   
+  </div>
+
+
+
+<div style="" id="nav" class="navbar">
+    <div id="text2" class="bottomtext"></div>
+</div>
+
+  <script type="text/javascript" src="static/jquery-2.1.1.min.js"></script>
+  
+<script type="text/javascript" src="static/slick.js"></script>
+
+  <script type="text/javascript">
+  
+var cid=window.location.pathname.split('/');
+cid=cid[cid.length - 1];
+
+var show_time=2000;
+var cur_gallery=[];
+var is_demo=false;
+
+function  next(){
+    $('.your-class').slick('slickNext');
+
+
+
+}
+
+function upd(){
+    if (is_demo){return;}
+    var d = new Date();
+    console.log('upd');
+    
+    $.getJSON( 'get_json/'+cid+'?'+d.getTime(), function( data ) {
+        if (data.length!=cur_gallery.length){location.reload();}
+    })
+    
+}
+
+
+$('.your-class').slick({
+  centerMode: true,
+  dots: false,
+  centerPadding: '60px',
+  slidesToShow: 3,
+  adaptiveHeight:false,
+  variableWidth: true,
+  arrows:false
+
+
+});
+
+function init_user(){
+         var d = new Date();
+     
+
+                
+                $.getJSON( '/get_json', function( data ) {
+     
+     
+          
+                      for (var i in data.slice(0, 200)){
+                                  $('.your-class').slick('slickAdd','<div><div class="wrap"><img src="'+data[i].img+'"></div></div>');
+                      }    
+                       cur_gallery=data;
+                       is_demo=false;
+                       setInterval(next,show_time);
+                       setInterval(upd,60*1000);
+                       
+                      //
+ 
+                    });          
+                
+ 
+    
+    
+         
+}
+
+
+
+window.onload = function () {
+        init_user();
+ 
+
+
+        //setTimeout(r,5000);
+        
+
+
+    } 
+  
+  
+  
+  
+  
+ 
+  </script>
+
+  </body>
+</html>

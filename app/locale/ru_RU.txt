@@ -1,0 +1,27 @@
+[LANG]
+Save=Сохранить
+Open=Открыть
+Save As...=Сохранить как
+Start=Старт
+Stop=Стоп
+All=Все
+Input=Вход
+Output=Выход
+Process=Действия
+Actions=Блоки
+Add=Добавить
+Config=Настр.
+Settings=Настройки
+Cancel=Отмена
+Config error=Ошибка конфигурации
+These actions are not configured=Эти действия не настроены
+This plugin has no help=У этого плагина нет помощи :(
+help=Помощь
+Sessions=Сессии
+Run=Запуск
+Waiting...=Ожидание...
+Favorites=Избранное
+Add to favorite: =Добавить в избранное: 
+Remove?=Удалить?
+Remove from favorites?=Удалить из избранного?
+Action not configured. Why add it to favorites?=Действие не настроено. Зачем его добавлять в избранное?

@@ -1,0 +1,5 @@
+[LANG]
+LUT=LUT
+LUT file (.cube)=LUT файл (.cube)
+Blending=Смешивание
+

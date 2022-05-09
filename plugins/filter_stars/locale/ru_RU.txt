@@ -1,0 +1,8 @@
+[LANG]
+Filter by Stars=Фильтр по рейтингу
+Approve if=Утвердить если
+Not set=Не установлен
+Rating more than=Рейтинг больше чем
+Rating is=Рейтинг равен
+Rating less than=Рейтинг меньше чем
+Load approved photos if not loaded=Загрузить утвержденные фотографии, если они еще не загружены

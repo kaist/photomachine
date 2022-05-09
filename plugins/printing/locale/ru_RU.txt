@@ -1,0 +1,7 @@
+[LANG]
+Print=Печать
+Printer settings=Настройки принтера
+Error=Ошибка
+Access denied=Отказано в доступе
+Borderless (Part of the image may be cropped)=Без полей (часть изображения может быть обрезана)
+With border (full image)=С полями (изображение целиком)

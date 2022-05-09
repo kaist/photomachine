@@ -1,0 +1,9 @@
+[LANG]
+Watermark=Ватермарка
+Watermark Image (.png)=Открыть ватермарку (.png)
+Anchor=Прилепить к
+Settings=Настройки
+Size=Размер
+Indent=Отступ
+Opacity=Прозрачность
+

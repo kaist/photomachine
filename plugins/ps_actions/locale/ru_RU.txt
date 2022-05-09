@@ -1,0 +1,5 @@
+[LANG]
+Photoshop actions=Экшены photoshop
+Sets=Наборы
+Action=Экшн
+waiting photoshop=ожидаем photoshop

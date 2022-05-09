@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html  class="fullscreen">
+<head>
+    <meta charset="UTF-8"/>
+    <base href="/"> 
+    <title id="title"></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title id="title"></title>
+
+    <link rel="stylesheet" type="text/css" href="static/polaroid-gallery.css"/>
+
+    <link rel="stylesheet" type="text/css" href="static/slick/slick.css"/>
+// Add the new slick-theme.css if you want the default styling
+    <link rel="stylesheet" type="text/css" href="static/slick/slick-theme.css"/>
+</head>
+<body class="fullscreen">
+
+
+
+
+<div id="gallery" style="" class="fullscreen"></div>
+
+
+<div style="background-color:rgba(0,0,0,.5);" id="nav" class="navbar">
+    <div style="width:100%;" class="itms">
+
+    </div>
+    <div style="background-color:rgba(0,0,0,.5);" id="text2" class="bottomtext"></div>
+    <button style="display: none;"  id="preview">1</button>
+    <button style="display: none;" id="next">2</button>
+</div>
+
+
+
+</body>
+<script type="text/javascript" src="static/polaroid-gallery.js"></script>
+<script type="text/javascript" src="static/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="static/slick/slick.min.js"></script>
+<script>
+var cid=window.location.pathname.split('/');
+cid=cid[cid.length - 1];
+var show_time=2000;
+var cur_gallery=[];
+var is_demo=false;
+var last_data='';
+function  next(){
+    $('#next').click();
+
+
+}
+
+function upd(){
+    if (is_demo){return;}
+    var d = new Date();
+    
+
+    
+}
+function reload() {
+    window.location.reload();
+}
+
+
+
+
+function init_user(){
+                $.getJSON( 'get_json', function( data ) {
+
+                       new polaroidGallery(data.slice(0, 200));
+                       cur_gallery=data;
+                       is_demo=false;
+                       setInterval(next,show_time);
+                       //setTimeout(reload,60*1000);
+                       
+                      //
+ 
+                    }); 
+    
+         
+}
+
+
+
+window.onload = function () {
+        init_user();
+      
+ 
+
+
+        //setTimeout(r,5000);
+        
+
+
+    }
+</script>
+</html>

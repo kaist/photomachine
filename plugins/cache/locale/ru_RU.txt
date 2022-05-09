@@ -1,0 +1,4 @@
+[LANG]
+Cache=Кешировать
+Clear cache at startup=Очистить кэш при старте
+Clear now=Очистить сейчас

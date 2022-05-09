@@ -1,0 +1,7 @@
+[LANG]
+PhotoFrame=Фоторамка
+Horizontal frame=Горизонтальная рамка
+Vertical frame=Вертикальная рамка
+Fit a frame into an image=Вписать рамку в изображение
+Fit the image into the frame size=Вписать изображение в размер рамки
+It is better to use separate frames for vertical or horizontal photos. But you can only use one photo frame for everyone.=Лучше использовать отдельные рамки для вертикальных или горизонтальных фотографий. Но можно использовать только одну фоторамку для всех.

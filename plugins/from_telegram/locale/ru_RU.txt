@@ -1,0 +1,3 @@
+[LANG]
+From Telegram Group=Из группы Telegram
+Key=Ключ

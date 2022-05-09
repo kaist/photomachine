@@ -1,0 +1,4 @@
+[LANG]
+Thumbnail=Миниатюра
+Max width (px.)=Макс. ширина (пискели)
+Max height (px.)=Макс высота (пиксели)

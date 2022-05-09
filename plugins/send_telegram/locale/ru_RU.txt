@@ -1,0 +1,2 @@
+[LANG]
+To Telegram Group=В группу Telegram

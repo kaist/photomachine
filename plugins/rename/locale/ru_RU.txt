@@ -1,0 +1,10 @@
+[LANG]
+Rename=Переименовать
+Name Template=Шаблон имени
+Digits count=Количество цифр
+Set counter to zero at start=Установить счетчик на ноль при старте
+Set now=Установить сейчас
+Patterns:\n[COUNT] - counter\n[YEAR],[MONTH],[DAY] - date\n[HOUR],[MINUTE],[SECOND] - time=Шаблоны:\n[COUNT] - счетчик\n[YEAR],[MONTH],[DAY] - дата\n[HOUR],[MINUTE],[SECOND] - время
+Date/Time from EXIF=Дата/Время из EXIF
+Date/Time now=Дата/Время сейчас
+Example=Пример

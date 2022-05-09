@@ -1,0 +1,9 @@
+[LANG]
+Auto connect to ezShare WiFi=Авто подключение к ezShare WiFi
+After downloading, connect to another WiFi=После загрузки, подключать к другому WiFi
+Pause between connections (seconds)=Пауза между подключениями (секунды)
+Clear database at startup=Очистить базу данных при старте
+Clear now=Очистить сейчас
+When connected to the ezShare Wi-Fi card, the browser opens a page with a gallery. Its annoying! You can temporarily disable this feature, but do not forget to turn it back on later so that there are no problems connecting to some WiFi networks=При подключении к Wi Fi карты ezShare, браузер открывает страницу с галереей. Это раздражает! Вы можете временно отключить эту функцию, но не забудьте включить её потом обратно, чтобы не было проблем с подключением к некоторым WiFi сетям.
+Switch off=Выключить бесючую фичу
+Turn it back on=Включить обратно

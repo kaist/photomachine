@@ -1,0 +1,7 @@
+[LANG]
+Web Server=Web сервер
+Select folder=Выбрать папку
+Built-in themes=Встроенные темы
+Other theme (see help)=Другая тема (смотри помощь)
+Server Port=Порт сервера
+After the start, the server will be available at addresses=После старта, сервер будет доступен по адресам

@@ -1,0 +1,5 @@
+[LANG]
+Collage=Коллаж
+This is the time in seconds that the plugin waits for the next image. If the time has passed, the plugin no longer waits for the next image and sends the incomplete layout.=Это время в секундах, которые плагин ждет следующее изображение. Если время прошло, плагин больше не ждет следующее изображение и отправляет не заполненную до конца разметку.
+
+

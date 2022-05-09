@@ -1,0 +1,11 @@
+[LANG]
+From folder=Из папки
+Select folder=Выбрать папку
+Find in subfolder=Искать в подкаталогах
+Do not open photos that have already been processed before.=Не открывать фотографии которые были раньше уже обработаны.
+Dont load image (just metadata)=Не загружать фотографии (только метаданные)
+Clear database at startup=Очищать базу данных при старте
+Clear now=Очистить сейчас
+Read the folder once=Прочитать папку один раз
+Monitor the folder at intervals (sec)=Следить за папкой с интервалом (сек)
+Delete the original=Удалять исходные

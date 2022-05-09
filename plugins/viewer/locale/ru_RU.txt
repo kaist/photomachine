@@ -1,0 +1,7 @@
+[LANG]
+Viewer=Просмотр
+Fullscreen (press ESC to exit)=На полный экран (нажмите ESC для выхода)
+Before and after split view="До" и "После" раздельный просмотр
+WARNING! Don't use rename actions before this feature works.=ВНИМАНИЕ! Не используйте действия по переименованию для работы этой возможности.
+Left/Right view=Слева/Справа
+Top/Bottom=Сверху/Снизу
