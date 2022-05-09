@@ -73,7 +73,8 @@ class App:
         plugins=Path('plugins/').glob('*')
         for p in plugins:
             if p.is_dir():
-                foo = SourceFileLoader("Plugin", str(p/'plugin.py')).load_module().Plugin()
+                try:foo = SourceFileLoader("Plugin", str(p/'plugin.py')).load_module().Plugin()
+                except ModuleNotFoundError:continue
                 foo.icon=PhotoImage(file=str(p/'icon.png'))
                 foo.path=p  
                 self.plugins.append(foo)
