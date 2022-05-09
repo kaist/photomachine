@@ -6,6 +6,7 @@ import time
 import pickle
 import subprocess
 import io
+import sys
 
 
 def check_raw(filename,image=None):
@@ -39,9 +40,21 @@ def file_to_pil(pth):
     return i
 
 
+def retry_on_error(fn):
+    def wr(store,settings,image,vars):
+        while True:
+            try:
+                ret=fn(store,settings,image,vars)
+                is_ok=True
+            except:is_ok=False
+            if is_ok:break
+            time.sleep(1)
+        return ret
+
+    return wr
+
 def run_thread(fn):
     def wr(store,settings,message_q,output_q,self_id,self_q=None):
-        print('start',self_id)
         while True:
             if not self_q.empty():
                 image,vars=self_q.get()

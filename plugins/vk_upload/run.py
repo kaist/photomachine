@@ -29,6 +29,7 @@ def parse_album(url):
 
 
 @run_thread
+@retry_on_error
 def run(store,settings,image,vars):
     image.thumbnail((7500,7500))
     print(image.size)
