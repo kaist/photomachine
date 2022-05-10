@@ -1,5 +1,5 @@
 from pathlib import Path
-from PIL import Image,ImageCms
+from PIL import Image,ImageCms,ImageOps
 import time
 import os
 import sys
@@ -30,7 +30,9 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
 
             try:
                 img=Image.open(x)
-                exif=img.getexif()
+
+
+
                 try:xmp=img.getxmp()
                 except:xmp={}
                 filename=img.filename
@@ -46,6 +48,13 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
                     img.load()
                     loaded=True        
             except:continue
+
+
+            t=img.getexif()
+            exif={}
+            for e in t:
+                exif[e]=t[e]
+
             for o in output_q:
                 vars={'filename':filename,'count':count,'exif':exif,'profile':icc_profile,'loaded':loaded,'xmp':xmp}
                 message=[self_id,'Load file {0} \n(count: {1})'.format(x.name,count)]

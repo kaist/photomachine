@@ -42,6 +42,7 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
                 cur=0
         if is_complete==False and (time.time()-tmr)>int(settings['timeout']):
             for o in output_q:
+
                 o.put([i.copy(),vars])
             is_complete=True
             cur=0

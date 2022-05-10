@@ -12,6 +12,7 @@ def run(store,settings,image,vars):
     xmp=vars['xmp']
     sys.stdout.flush()
     try:
+
         rating=int(xmp['xmpmeta']['RDF']['Description']['Rating'])
     except:
         rating=0

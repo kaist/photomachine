@@ -11,6 +11,9 @@ if hasattr(sys,"frozen"):
     sys.stderr=open(p,'a+')
 
 
+
+VERSION='1.05'
+
 import threading
 from pathlib import Path
 from importlib.machinery import SourceFileLoader
@@ -38,6 +41,8 @@ def start_plug(path,settings,message_q,output_q,self_id,self_q=None):
 
 class App:
     def __init__(self,gui,open_file,startup_start):
+        
+        self.version=VERSION
         self.favorites=[]
 
         p=Path().home()/Path('.photomachine')/Path('favorites.items')
@@ -243,9 +248,10 @@ class App:
             while not x.empty():
                 try:
                     x.get(False)
+                    x.task_done()   
                 except Empty:
                     continue
-                x.task_done()   
+                
         self.plug_q={}         
         self.all_process=[]
         self.is_start=False
@@ -269,8 +275,6 @@ class App:
     def dispatcher(self):
 
         self.proc=psutil.Process()
-
-
 
         self.manager=multiprocessing.Manager()
 

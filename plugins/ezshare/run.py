@@ -77,7 +77,11 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
             except:
                 is_ok=False
                 continue
-            exif=img.getexif()
+
+            t=img.getexif()
+            exif={}
+            for e in t:
+                exif[e]=t[e]
             try:xmp=img.getxmp()
             except:xmp={}
             filename=x.split('%5C')[-1]

@@ -1,0 +1,2 @@
+[LANG]
+PhotoBooth confirm=Фотобудка подтверждение
