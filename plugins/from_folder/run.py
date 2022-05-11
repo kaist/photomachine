@@ -29,9 +29,9 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
                 store.image_list=i_list
 
             try:
-                img=Image.open(x)
-
-
+                try:img=Image.open(x)
+                except:
+                    img=check_raw(x)
 
                 try:xmp=img.getxmp()
                 except:xmp={}
@@ -50,7 +50,8 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
             except:continue
 
 
-            t=img.getexif()
+            try:t=img.getexif()
+            except:t={}
             exif={}
             for e in t:
                 exif[e]=t[e]

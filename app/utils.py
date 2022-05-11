@@ -1,28 +1,9 @@
 from PIL import Image
 from pathlib import Path
 import tempfile
-import threading
 import time
 import pickle
-import subprocess
-import io
 import sys
-
-
-def check_raw(filename,image=None):
-    if str(filename).lower().endswith('.cr2'):
-        dcraw_opts = ["app/dcraw", "-c", "-e", filename]
-        dcraw_proc = subprocess.Popen(dcraw_opts, stdout=subprocess.PIPE,shell=False)
-        image = io.BytesIO(dcraw_proc.communicate()[0])
-        image.seek(0)
-        img=Image.open(image)
-        return img
-    else:
-        if image:return image
-        else:
-            try:
-                return Image.open(filename)
-            except:return None
 
 
 

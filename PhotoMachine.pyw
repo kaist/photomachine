@@ -268,7 +268,7 @@ class App:
         for x in ch:
             ram+=x.memory_info()[0]
         ram=int(ram/1024/1024)
-        cpu=psutil.cpu_percent(interval=None)
+        cpu=int(psutil.cpu_percent(interval=None))
         self.gui.update_pstext(cpu,ram)
 
 

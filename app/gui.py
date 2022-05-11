@@ -338,12 +338,12 @@ class Gui:
 
 
 
-        self.root.after(1000,self.update_ps)
+        self.root.after(100,self.update_ps)
         self.root.after(1500,self.dis_splash)
   
 
     def update_pstext(self,cpu,mem):
-        self.ps_label['text']=f'CPU load:{cpu}%\nMemory load:{mem}'
+        self.ps_label['text']=f'CPU load:{cpu:3}%\nMemory :{mem:3} MB'
 
 
     def dis_splash(self,event=None):
