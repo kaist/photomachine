@@ -13,25 +13,17 @@ if hasattr(sys,"frozen"):
 
 
 VERSION='1.05'
-
-import threading
-from pathlib import Path
 from importlib.machinery import SourceFileLoader
-import json
-import time
-import multiprocessing
-import sys 
-import os 
-import psutil
-import pickle
-
 from app.utils import PluginStore
+import multiprocessing
 
 
 
 
 
-MAX_Q=3
+
+
+
 
 def start_plug(path,settings,message_q,output_q,self_id,self_q=None):
     run=SourceFileLoader("run", str(path/'run.py')).load_module().run
@@ -41,6 +33,16 @@ def start_plug(path,settings,message_q,output_q,self_id,self_q=None):
 
 class App:
     def __init__(self,gui,open_file,startup_start):
+        p=Path().home()/Path('.photomachine')/Path('main_settings.json')
+        self.settings={'max_q':10,'check_updates':True,'send_errors':True}
+        if p.exists():
+            with open(p,'rb') as f:
+                try:self.settings=json.load(f)
+                except:pass
+                
+
+
+
         
         self.version=VERSION
         self.favorites=[]
@@ -65,13 +67,46 @@ class App:
 
 
 
-
-
-
         th=threading.Thread(target=self.dispatcher,args=())
         th.start()
+
+        if self.settings['check_updates']:
+            upd=threading.Thread(target=self.check_update,args=())
+            upd.start()
+
+        if self.settings['send_errors']:
+            upd=threading.Thread(target=self.check_errors,args=())
+            upd.start()
+
         if open_file:
             self.load_state(open_file)
+
+    def check_update(self):
+        time.sleep(3)
+        try:
+            lang, enc = locale.getdefaultlocale()
+            resp=requests.get('https://photo-machine.ru/check_updates/'+VERSION+'/'+lang+'/').json()
+            if resp['is_new']:
+                root.after(1,lambda:self.gui.new_update(resp))
+        except:pass
+
+    def check_errors(self):
+        p=Path().home()/Path('.photomachine')/Path('error.txt')
+        if not p.exists():return
+        sys.stderr.close()
+        sys.stderr=sys.stdout
+        f=open(p)
+        log=f.read()
+        f.close()
+        if len(log)>0:
+            try:requests.post('https://photo-machine.ru/error_report/',data={'error':log,'platform':sys.platform,'version':VERSION})
+            except:pass
+            f=open(p,'w')
+            f.truncate(0)
+            f.close()
+        if hasattr(sys,"frozen"):
+            sys.stderr=open(p,'a+')
+
 
 
     def init_plugins(self):
@@ -126,11 +161,25 @@ class App:
 
     def config_action(self,uid,frame):
         plug=self.find_by_uid(uid)
-        plug.plugin.start_config(frame,plug)
+        if plug:
+            plug.plugin.start_config(frame,plug)
+        else:
+            gui.start_main_config(frame)
 
     def save_config(self,uid):
-        plug=self.find_by_uid(uid)    
-        plug.settings=plug.plugin.save_config() 
+        plug=self.find_by_uid(uid)
+        if plug:
+            plug.settings=plug.plugin.save_config() 
+        else:
+            conf=self.gui.save_main_config()
+            p=Path().home()/Path('.photomachine')/Path('main_settings.json')
+            self.settings=conf
+            if not p.parent.exists():p.parent.mkdir()
+            with open(p,'w') as f:
+                json.dump(self.settings,f)
+
+
+
 
     def remove_favorite(self,sets):
         self.favorites.remove(sets)
@@ -299,9 +348,17 @@ if __name__=='__main__':
         if '--start' in sys.argv:
             startup_start=True
 
-
+    import threading
+    import json
+    import time
+    import sys 
+    import os 
+    import psutil
+    import pickle
     from tkinter import Tk
     from app.gui import *
+    import locale
+    import requests
     root=Tk()
     root.withdraw()
     gui=Gui(root)

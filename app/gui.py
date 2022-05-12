@@ -10,6 +10,7 @@ from tkinter.ttk import *
 from tkinter import filedialog
 from tkinter import messagebox
 from tkhtmlview import HTMLScrolledText
+import webbrowser
 
 
 
@@ -198,6 +199,9 @@ class RunInCanvas:
         self.state_label['text']=text
 
 
+
+
+
 class Gui:
     def __init__(self,root):
         self.root=root
@@ -239,7 +243,7 @@ class Gui:
         self.ps_label=Label(misc_frame,wraplength=200)
         self.ps_label.pack(side=LEFT,padx=5,pady=5)
 
-        Button(misc_frame,image=icons.settings,width=1,compound='left').pack(side=LEFT,padx=5,pady=5)
+        Button(misc_frame,image=icons.settings,width=1,compound='left',command=self.config_action).pack(side=LEFT,padx=5,pady=5)
         Button(misc_frame,image=icons.help,width=1,compound='left').pack(side=LEFT,padx=5,pady=5)        
         Button(misc_frame,image=icons.machine,width=10,text=_('About'),compound='left').pack(side=LEFT,padx=5,pady=5)   
 
@@ -701,20 +705,59 @@ class Gui:
     def delete_action(self,uid):
         self.app.delete_action(uid)
 
-    def config_action(self,uid):
-        self.app.config_action(uid)
 
 
-    def config_action(self,uid):
+    def new_update(self,resp):
+        win=Toplevel(self.root)
+        win.geometry('500x300')
+        self.center_window(win)  
+        dark_title_bar(win)
+        win.title(_('New update is available'))
+        win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file='app/icons/stream.png'))
+        win.focus_force()
+        fr=Frame(win)
+        fr.pack(side=BOTTOM,padx=5,pady=5,fill=X)
+        Button(fr,text=_('Download update'),image=icons.download,compound='left',command=lambda:webbrowser.open('https://photo-machine.ru/download/')).pack(side=LEFT,padx=5,pady=5,fill=X)        
+        Button(fr,text=_('Close'),image=icons.cancel,compound='left',command=lambda:win.destroy()).pack(side=RIGHT,padx=5,pady=5,fill=X)
+        h=HTMLScrolledText(win,html=resp['changelog'])
+        h.pack(side=TOP,padx=5,pady=5)
+
+
+    def start_main_config(self,frame):
+        Label(frame,wraplength=300,text=_('Maximum number of photos in the queue. The more, the more RAM a program can take up.')).grid(row=0,column=0,padx=5,pady=5,sticky=W)
+        self.max_q_var=IntVar(value=self.app.settings['max_q'])
+        Entry(frame,textvariable=self.max_q_var,width=10).grid(row=0,column=1,padx=5,pady=5,sticky=W)
+        self.check_updates_var=BooleanVar(value=self.app.settings['check_updates'])
+        Checkbutton(frame,variable=self.check_updates_var,text=_('Check for updates automatically')).grid(row=1,column=0,columnspan=2,sticky=W)
+
+
+        self.error_var=BooleanVar(value=self.app.settings['send_errors'])
+        Checkbutton(frame,variable=self.error_var,text=_('Send error reports')).grid(row=2,column=0,columnspan=2,sticky=W)
+
+    def save_main_config(self):
+        d={}
+        d['max_q']=int(self.max_q_var.get())
+        d['check_updates']=int(self.check_updates_var.get())
+        d['send_errors']=int(self.error_var.get())
+        return d
+
+
+    def config_action(self,uid=None):
         plug=self.app.find_by_uid(uid)
         self.set_top_w=Toplevel(self.root)
         self.center_window(self.set_top_w)
         dark_title_bar(self.set_top_w)
         win=self.set_top_w
-        win.title(plug.plugin.name+' '+_('settings'))
-        win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file=str(plug.path)+'/icon.png'))
+
+        if plug:
+            win.title(plug.plugin.name+' '+_('settings'))
+            win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file=str(plug.path)+'/icon.png'))
+            frame=Labelframe(win,text=plug.plugin.name+' '+_('settings'))
+        else:
+            win.title(_('settings'))
+            win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file='app/icons/stream.png'))
+            frame=Frame(win)            
         win.focus_force()
-        frame=Labelframe(win,text=plug.plugin.name+' '+_('settings'))
         frame.pack(fill=X,padx=5,pady=5)
         actions=Frame(win)
         actions.pack(fill=X,padx=5,pady=5)
