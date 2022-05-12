@@ -237,7 +237,11 @@ class Gui:
         misc_frame=Labelframe(self.top_frame,text=_('Photomachine'))
         misc_frame.pack(padx=50,pady=5,side=LEFT)
         self.ps_label=Label(misc_frame,wraplength=200)
-        self.ps_label.pack(padx=5,pady=5)
+        self.ps_label.pack(side=LEFT,padx=5,pady=5)
+
+        Button(misc_frame,image=icons.settings,width=1,compound='left').pack(side=LEFT,padx=5,pady=5)
+        Button(misc_frame,image=icons.help,width=1,compound='left').pack(side=LEFT,padx=5,pady=5)        
+        Button(misc_frame,image=icons.machine,width=10,text=_('About'),compound='left').pack(side=LEFT,padx=5,pady=5)   
 
         act_frame=Labelframe(self.top_frame,text=_('Run')) 
         self.start_but=Button(act_frame,text=_('Start'),image=icons.play,compound='left',width=7,command=self.startstop)
