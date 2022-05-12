@@ -25,3 +25,4 @@ Add to favorite: =Добавить в избранное:
 Remove?=Удалить?
 Remove from favorites?=Удалить из избранного?
 Action not configured. Why add it to favorites?=Действие не настроено. Зачем его добавлять в избранное?
+PhotoMachine=Фотомашина

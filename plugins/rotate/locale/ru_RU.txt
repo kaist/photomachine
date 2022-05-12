@@ -1,0 +1,10 @@
+[LANG]
+Rotate/Flip=Поворот/Отобразить
+Rotate=Повернуть
+Any=Любые
+Vertical only=Только вертикальные
+Horizontal only=Только горизонтальные
+90° (clockwise)=90° (по часовой стрелке)
+-90° (counterclockwise)=-90° (против часовой стрелки)
+Flip horizontally=Отобразить по горизонтали
+Flip vertically=Отобразить по вертикали

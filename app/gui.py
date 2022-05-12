@@ -234,8 +234,8 @@ class Gui:
         Button(self.session_frame,text=_('Save As...'),command=self.save_as_state,image=icons.save_as,compound='left').pack(side=LEFT,padx=5,pady=5)        
         Button(self.session_frame,text=_('Open'),command=self.load_state,image=icons.open_file,compound='left').pack(side=LEFT,padx=5,pady=5)  
 
-        misc_frame=Frame(self.top_frame)
-        misc_frame.pack(padx=5,pady=5,side=LEFT)
+        misc_frame=Labelframe(self.top_frame,text=_('Photomachine'))
+        misc_frame.pack(padx=50,pady=5,side=LEFT)
         self.ps_label=Label(misc_frame,wraplength=200)
         self.ps_label.pack(padx=5,pady=5)
 
@@ -351,7 +351,6 @@ class Gui:
             import pyi_splash
             pyi_splash.close()
         except:pass
-        #self.root.iconify()
 
     def bind_tree(self,widget, event, callback):
         "Binds an event to a widget and all its descendants."
