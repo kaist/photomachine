@@ -546,14 +546,21 @@ class Gui:
         win=PlugInCanvas(self,act)
         if not act.plugin.need_config:
             win.button_config['state']='disabled'
+        if self.app.settings['vertical_nodes']:
+            dx,dy=0,64/2
+            dx1,dy1=125,0
+        else:
+            dx,dy=125,0
+            dx1,dy1=0,65/2
+
         self.main_canvas.create_window(win.x,win.y,window=win.frame,tags=(act.id,str(act.id)+'-wintag','wintag'),width=250,height=65,anchor=CENTER)
-        self.main_canvas.create_image(win.x-250/2,win.y-65/2,image=icons.drag,tags=(act.id,str(act.id)+'-move','movetag'),anchor=CENTER)
+        self.main_canvas.create_image(win.x-dx1,win.y-dy1,image=icons.drag,tags=(act.id,str(act.id)+'-move','movetag'),anchor=CENTER)
 
         if act.plugin.category in ['process','output']:
-            self.main_canvas.create_image(win.x,win.y-65/2,image=icons.input_icon,tags=(act.id,str(act.id)+'-output','inputtag'),anchor=CENTER)
+            self.main_canvas.create_image(win.x-dx,win.y-dy,image=icons.input_icon,tags=(act.id,str(act.id)+'-output','inputtag'),anchor=CENTER)
 
         if act.plugin.category in ['input','process']:
-            self.main_canvas.create_image(win.x,win.y+65/2,image=icons.output_icon,tags=(act.id,str(act.id)+'-input','outputtag'),anchor=CENTER)
+            self.main_canvas.create_image(win.x+dx,win.y+dy,image=icons.output_icon,tags=(act.id,str(act.id)+'-input','outputtag'),anchor=CENTER)
 
         self.main_canvas.tag_bind('inputtag',"<Button-1>",self.line_start)
         self.main_canvas.tag_bind('outputtag',"<Button-1>",self.line_start)     
@@ -562,6 +569,9 @@ class Gui:
         self.main_canvas.tag_bind('movetag',"<Button-1>",self.move_click)
         self.main_canvas.tag_bind('movetag',"<B1-Motion>",self.move_motion)
         self.main_canvas.tag_bind('movetag',"<ButtonRelease-1>",self.move_end)        
+
+
+
 
         self.main_canvas.tag_bind(str(act.id)+'-move',"<Enter>",self.move_cursor_start)     
         self.main_canvas.tag_bind(str(act.id)+'-move',"<Leave>",self.move_cursor_end)   
@@ -678,7 +688,12 @@ class Gui:
             for plug_to in plug.outputs:
                 from_dot=self.main_canvas.coords(from_uid)
                 to_dot=self.main_canvas.coords(plug_to)
-                self.main_canvas.create_line(from_dot[0],from_dot[1]+65/2+8,to_dot[0],to_dot[1]-65/2-8,tags=('lines',plug_to),width=1.5,fill='#626567')
+                if self.app.settings['vertical_nodes']:
+                    dx,dy=0,65/2+8
+                else:
+                    dx,dy=125+8,0
+
+                self.main_canvas.create_line(from_dot[0]+dx,from_dot[1]+dy,to_dot[0]-dx,to_dot[1]-dy,tags=('lines',plug_to),width=1.5,fill='#626567')
                 middle_x=from_dot[0]+(to_dot[0]-from_dot[0])/2
                 middle_y=from_dot[1]+(to_dot[1]-from_dot[1])/2          
 
@@ -727,18 +742,27 @@ class Gui:
         Label(frame,wraplength=300,text=_('Maximum number of photos in the queue. The more, the more RAM a program can take up.')).grid(row=0,column=0,padx=5,pady=5,sticky=W)
         self.max_q_var=IntVar(value=self.app.settings['max_q'])
         Entry(frame,textvariable=self.max_q_var,width=10).grid(row=0,column=1,padx=5,pady=5,sticky=W)
+
+        self.vert_nodes_var=IntVar(value=self.app.settings['vertical_nodes'])
+        Radiobutton(frame,text=_('Connect nodes horizontal'),variable=self.vert_nodes_var,value=0).grid(row=1,column=0,padx=5,pady=5,columnspan=2,sticky=W)
+        Radiobutton(frame,text=_('Connect nodes vertical'),variable=self.vert_nodes_var,value=1).grid(row=2,column=0,padx=5,pady=5,columnspan=2,sticky=W)
+
+
         self.check_updates_var=BooleanVar(value=self.app.settings['check_updates'])
-        Checkbutton(frame,variable=self.check_updates_var,text=_('Check for updates automatically')).grid(row=1,column=0,columnspan=2,sticky=W)
+        Checkbutton(frame,variable=self.check_updates_var,text=_('Check for updates automatically')).grid(row=3,column=0,columnspan=2,sticky=W)
+
 
 
         self.error_var=BooleanVar(value=self.app.settings['send_errors'])
-        Checkbutton(frame,variable=self.error_var,text=_('Send error reports')).grid(row=2,column=0,columnspan=2,sticky=W)
+        Checkbutton(frame,variable=self.error_var,text=_('Send error reports')).grid(row=4,column=0,columnspan=2,sticky=W)
 
     def save_main_config(self):
         d={}
         d['max_q']=int(self.max_q_var.get())
         d['check_updates']=int(self.check_updates_var.get())
         d['send_errors']=int(self.error_var.get())
+        d['vertical_nodes']=self.vert_nodes_var.get()
+        
         return d
 
 

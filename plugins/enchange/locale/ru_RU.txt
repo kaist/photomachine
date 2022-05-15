@@ -1,4 +1,11 @@
 [LANG]
-Sharpness=Резкость
 Image Settings=Настройки изображения
-
+Saturation=Насыщенность
+Contrast=Контраст
+Brightness=Яркость
+Unsharp mask=Нерезкая маска (Unsharp mask)
+Enable unsharp mask=Включить нерезкую маску
+Radius=Радиус
+Percent=Проценты
+Threshold=Порог
+Sharpness=Резкость

@@ -4,7 +4,6 @@ from pathlib import Path
 
 if hasattr(sys,"frozen"):
     os.chdir(os.path.dirname(sys.executable))
-
     p=Path().home()/Path('.photomachine')/Path('error.txt')
     if not p.parent.exists():
         p.parent.mkdir()
@@ -34,7 +33,10 @@ def start_plug(path,settings,message_q,output_q,self_id,self_q=None):
 class App:
     def __init__(self,gui,open_file,startup_start):
         p=Path().home()/Path('.photomachine')/Path('main_settings.json')
-        self.settings={'max_q':10,'check_updates':True,'send_errors':True}
+        self.settings={'max_q':10,
+                        'check_updates':True,
+                        'send_errors':True,
+                        'vertical_nodes':False}
         if p.exists():
             with open(p,'rb') as f:
                 try:self.settings=json.load(f)
@@ -177,6 +179,7 @@ class App:
             if not p.parent.exists():p.parent.mkdir()
             with open(p,'w') as f:
                 json.dump(self.settings,f)
+            self.gui.redraw_canvas()
 
 
 
