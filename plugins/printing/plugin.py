@@ -30,8 +30,7 @@ class Plugin:
         self.printers_combo.grid(row=0,column=0,padx=5,pady=5)
         self.printers_combo.bind("<<ComboboxSelected>>", self.select_printer)
         printers = win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL, None, 1)
-        for x in printers:
-            self.all_printers.append(x[2])
+        self.all_printers.extend(x[2] for x in printers)
         self.printers_combo['values']=self.all_printers
         self.f_image=PhotoImage(file=str(self.cur_path/'printer.png'))
         Button(frame,text=_('Printer settings'),command=self.printer_setup,image=self.f_image,compound='left').grid(row=0,column=1,padx=5,pady=5)
@@ -43,8 +42,7 @@ class Plugin:
        
 
     def save_config(self):
-        d={}
-        d['printer']=self.printer_var.get()
+        d = {'printer': self.printer_var.get()}
         d['printer_settings']=self.printer_settings
         d['contain']=self.contain_var.get()
         return d
@@ -73,17 +71,20 @@ class Plugin:
                     setattr(pDevModeObj,k,self.printer_settings[k])
                 except AttributeError:
                     pass
-                                
+
             info["pDevMode"]=pDevModeObj
             win32print.SetPrinter(handle,2,info,0)
 
         ret=win32print.DocumentProperties(self.frame.winfo_id(),handle,printer,pDevModeObj,pDevModeObj,5)
         if ret==2:return
 
-        sets={}
-        for n in dir(pDevModeObj):
-            if type(getattr(pDevModeObj,n) ) is int or type(getattr(pDevModeObj,n) ) is str:
-                sets[n]=getattr(pDevModeObj,n)
+        sets = {
+            n: getattr(pDevModeObj, n)
+            for n in dir(pDevModeObj)
+            if type(getattr(pDevModeObj, n)) is int
+            or type(getattr(pDevModeObj, n)) is str
+        }
+
         self.printer_settings=sets
 
 

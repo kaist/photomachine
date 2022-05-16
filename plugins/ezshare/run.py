@@ -15,7 +15,7 @@ def all_files():
     known_urls=[]
     def flist(url):
         known_urls.append(url)
-        root=requests.get('http://ezshare.card/'+url)
+        root = requests.get(f'http://ezshare.card/{url}')
         for x in root.text.split('\n'):
             if '/download?file' in x:
                 dwn=x.split('="')[1].split('">')[0]
@@ -59,7 +59,7 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
 
             time.sleep(5)
         message=[self_id,'Getting image list...']
-        message_q.put(message)       
+        message_q.put(message)
         try:lst=all_files()
         except:
             is_ok=False
@@ -79,9 +79,7 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
                 continue
 
             t=img.getexif()
-            exif={}
-            for e in t:
-                exif[e]=t[e]
+            exif = {e: t[e] for e in t}
             try:xmp=img.getxmp()
             except:xmp={}
             filename=x.split('%5C')[-1]
@@ -100,10 +98,9 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
             count+=1
         if is_ok:
             message=[self_id,'Waiting...']
-            message_q.put(message)
         else:
             message=[self_id,'EzShare is not available']
-            message_q.put(message)
+        message_q.put(message)
         if settings['disconnect']:
             try:data = subprocess.check_output(['netsh', 'wlan', 'connect', f'name={settings["dis_ap"]}'])
             except:pass

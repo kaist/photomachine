@@ -13,6 +13,4 @@ def run(store,settings,image,vars):
     if not vars['loaded']:
         image=Image.open(vars['filename'])
         vars['loaded']=True
-        return image,vars,msg
-    else:
-        return image,vars,msg
+    return image,vars,msg

@@ -13,7 +13,7 @@ class Plugin:
 
 
 	def force_int(self,varname,index,mode):
-		var= getattr(self, varname+'_var')
+		var = getattr(self, f'{varname}_var')
 		try:newval=int(var.get())
 		except:
 			newval=100
@@ -124,8 +124,7 @@ class Plugin:
 
 
 	def save_config(self):
-		d={}
-		d['path']=self.path_var.get()
+		d = {'path': self.path_var.get()}
 		d['size']=self.size_var.get()
 		d['indent']=self.indent_var.get()
 		d['opacity']=self.opacity_var.get()

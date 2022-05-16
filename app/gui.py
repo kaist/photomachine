@@ -46,7 +46,7 @@ class Translation:
     def read_f(self,path):
         conf=configparser.ConfigParser()
         try:
-            conf.read_file(open(Path(path)/(self.lang+'.txt'), encoding='utf-8'))
+            conf.read_file(open(Path(path) / f'{self.lang}.txt', encoding='utf-8'))
         except:return
         for x in conf['LANG']:
             self.trans[x]=conf['LANG'][x]
@@ -411,19 +411,21 @@ class Gui:
         win_height = height + titlebar_height + frm_width
         x = win.winfo_screenwidth() // 2 - win_width // 2
         y = win.winfo_screenheight() // 2 - win_height // 2
-        win.geometry('+{}+{}'.format( x, y))
+        win.geometry(f'+{x}+{y}')
         #win.deiconify()
 
 
 
     def about_plugin(self,plug=None):
-        if plug:
-            p=Path(plug.path)
-        else:
-            p=Path('app')
+        p = Path(plug.path) if plug else Path('app')
         lang, enc = locale.getdefaultlocale()
         try:
-            html=io.open(p/Path('locale')/(lang+'_info.html'),mode="r", encoding="utf-8").read()
+            html = io.open(
+                p / Path('locale') / f'{lang}_info.html',
+                mode="r",
+                encoding="utf-8",
+            ).read()
+
         except:
             try:
                 html=io.open(p/Path('locale')/('info.html'),mode="r", encoding="utf-8").read()
@@ -432,14 +434,20 @@ class Gui:
         win=Toplevel(self.root)
         win.geometry('900x600')
         self.center_window(win)
-        
+
         dark_title_bar(win)
         if plug:
-            win.title(plug.name+' '+_('help'))
-            win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file=str(plug.path)+'/icon.png'))
+            win.title(f'{plug.name} ' + _('help'))
+            win.tk.call(
+                'wm',
+                'iconphoto',
+                win._w,
+                PhotoImage(file=f'{str(plug.path)}/icon.png'),
+            )
+
         else:
             win.title(_('PhotoMachine')+' '+_('help'))
-            win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file='app/icons/stream.png'))            
+            win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file='app/icons/stream.png'))
         win.focus_force()
         Button(win,text=_('Ok'),image=icons.done,compound='left',command=lambda:win.destroy()).pack(side=BOTTOM,padx=5,pady=5,fill=X)
         h=HTMLScrolledText(win,html=html)
@@ -484,7 +492,7 @@ class Gui:
 
     def remove_favorite(self,sets):
         msg= messagebox.askquestion(_('Remove?'),_('Remove from favorites?')+'\n'+sets[2],icon = 'warning')
-        if not(msg=='yes'):return
+        if msg != 'yes':return
         self.app.remove_favorite(sets)
         self.init_favorites_gui()
 
@@ -525,9 +533,8 @@ class Gui:
         if new:
 
             act=PlugAction(plugin)
-            if not(act.settings):
-                if (hasattr(act.plugin,'default_config')):
-                    act.settings=act.plugin.default_config
+            if not (act.settings) and (hasattr(act.plugin, 'default_config')):
+                act.settings=act.plugin.default_config
             if sets:
                 act.settings=sets[1]
                 act.name=sets[2]
@@ -560,14 +567,44 @@ class Gui:
             dx,dy=125,0
             dx1,dy1=0,65/2
 
-        self.main_canvas.create_window(win.x,win.y,window=win.frame,tags=(act.id,str(act.id)+'-wintag','wintag'),width=250,height=65,anchor=CENTER)
-        self.main_canvas.create_image(win.x-dx1,win.y-dy1,image=icons.drag,tags=(act.id,str(act.id)+'-move','movetag'),anchor=CENTER)
+        self.main_canvas.create_window(
+            win.x,
+            win.y,
+            window=win.frame,
+            tags=(act.id, f'{str(act.id)}-wintag', 'wintag'),
+            width=250,
+            height=65,
+            anchor=CENTER,
+        )
+
+        self.main_canvas.create_image(
+            win.x - dx1,
+            win.y - dy1,
+            image=icons.drag,
+            tags=(act.id, f'{str(act.id)}-move', 'movetag'),
+            anchor=CENTER,
+        )
+
 
         if act.plugin.category in ['process','output']:
-            self.main_canvas.create_image(win.x-dx,win.y-dy,image=icons.input_icon,tags=(act.id,str(act.id)+'-output','inputtag'),anchor=CENTER)
+            self.main_canvas.create_image(
+                win.x - dx,
+                win.y - dy,
+                image=icons.input_icon,
+                tags=(act.id, f'{str(act.id)}-output', 'inputtag'),
+                anchor=CENTER,
+            )
+
 
         if act.plugin.category in ['input','process']:
-            self.main_canvas.create_image(win.x+dx,win.y+dy,image=icons.output_icon,tags=(act.id,str(act.id)+'-input','outputtag'),anchor=CENTER)
+            self.main_canvas.create_image(
+                win.x + dx,
+                win.y + dy,
+                image=icons.output_icon,
+                tags=(act.id, f'{str(act.id)}-input', 'outputtag'),
+                anchor=CENTER,
+            )
+
 
         self.main_canvas.tag_bind('inputtag',"<Button-1>",self.line_start)
         self.main_canvas.tag_bind('outputtag',"<Button-1>",self.line_start)     
@@ -580,15 +617,33 @@ class Gui:
 
 
 
-        self.main_canvas.tag_bind(str(act.id)+'-move',"<Enter>",self.move_cursor_start)     
-        self.main_canvas.tag_bind(str(act.id)+'-move',"<Leave>",self.move_cursor_end)   
+        self.main_canvas.tag_bind(
+            f'{str(act.id)}-move', "<Enter>", self.move_cursor_start
+        )
+
+        self.main_canvas.tag_bind(
+            f'{str(act.id)}-move', "<Leave>", self.move_cursor_end
+        )
+           
 
 
-        self.main_canvas.tag_bind(str(act.id)+'-input',"<Enter>",self.line_cursor_start)        
-        self.main_canvas.tag_bind(str(act.id)+'-input',"<Leave>",self.line_cursor_end)
+        self.main_canvas.tag_bind(
+            f'{str(act.id)}-input', "<Enter>", self.line_cursor_start
+        )
 
-        self.main_canvas.tag_bind(str(act.id)+'-output',"<Enter>",self.line_cursor_start)       
-        self.main_canvas.tag_bind(str(act.id)+'-output',"<Leave>",self.line_cursor_end)
+        self.main_canvas.tag_bind(
+            f'{str(act.id)}-input', "<Leave>", self.line_cursor_end
+        )
+
+
+        self.main_canvas.tag_bind(
+            f'{str(act.id)}-output', "<Enter>", self.line_cursor_start
+        )
+
+        self.main_canvas.tag_bind(
+            f'{str(act.id)}-output', "<Leave>", self.line_cursor_end
+        )
+
 
         self.main_canvas.tag_raise('movetag','wintag')
 
@@ -623,29 +678,30 @@ class Gui:
 
 
     def canv_release(self,event):
-        if self.new_line:
-            self.main_canvas.delete(self.temp_line)
-            self.root.config(cursor="arrow")
-            self.new_line=False
-            c = event.widget
-            x = c.canvasx(event.x)
-            y = c.canvasy(event.y)
-            #tag=self.main_canvas.gettags(event.widget.find_withtag("current"))
-            obj=self.main_canvas.find_closest(x,y,halo=1)
-            tag=self.main_canvas.gettags(obj)
-            tp=None
-            if tag and tag[0]!=self.new_line_uid:
-                if 'inputtag' in tag:
-                    tp='input'
-                elif 'outputtag' in tag:
-                    tp='output'
-                if not tp:return
+        if not self.new_line:
+            return
+        self.main_canvas.delete(self.temp_line)
+        self.root.config(cursor="arrow")
+        self.new_line=False
+        c = event.widget
+        x = c.canvasx(event.x)
+        y = c.canvasy(event.y)
+        #tag=self.main_canvas.gettags(event.widget.find_withtag("current"))
+        obj=self.main_canvas.find_closest(x,y,halo=1)
+        tag=self.main_canvas.gettags(obj)
+        tp=None
+        if tag and tag[0]!=self.new_line_uid:
+            if 'inputtag' in tag:
+                tp='input'
+            elif 'outputtag' in tag:
+                tp='output'
+            if not tp:return
 
-                if self.new_line_type!=tp:
-                    if self.new_line_type=='input':
-                        self.app.connect(tag[0],self.new_line_uid)
-                    else:
-                        self.app.connect(self.new_line_uid,tag[0])
+            if self.new_line_type!=tp:
+                if self.new_line_type=='input':
+                    self.app.connect(tag[0],self.new_line_uid)
+                else:
+                    self.app.connect(self.new_line_uid,tag[0])
 
             #self.main_canvas.coords(self.temp_line,self.temp_line_start[0],self.temp_line_start[1],event.x,event.y)
             #self.root.config(cursor="tcross")
@@ -671,7 +727,7 @@ class Gui:
         self.main_canvas.move(tag,event.x-self.last_x,event.y-self.last_y)
         self.last_x=event.x
         self.last_y=event.y
-        tgs=self.main_canvas.find_withtag(tag+'-wintag')
+        tgs = self.main_canvas.find_withtag(f'{tag}-wintag')
         c=self.main_canvas.coords(tgs)
         self.app.update_coords(tag,c[0],c[1])
         self.update_lines()
@@ -704,8 +760,15 @@ class Gui:
                 middle_x=from_dot[0]+(to_dot[0]-from_dot[0])/2
                 middle_y=from_dot[1]+(to_dot[1]-from_dot[1])/2          
 
-                self.main_canvas.create_image(middle_x,middle_y,image=icons.delete_line,tags=('lines','delete_line',from_uid+':'+plug_to),anchor=CENTER)
-        self.main_canvas.tag_bind('delete_line',"<Enter>",self.delete_line_cursor_start)        
+                self.main_canvas.create_image(
+                    middle_x,
+                    middle_y,
+                    image=icons.delete_line,
+                    tags=('lines', 'delete_line', f'{from_uid}:{plug_to}'),
+                    anchor=CENTER,
+                )
+
+        self.main_canvas.tag_bind('delete_line',"<Enter>",self.delete_line_cursor_start)
         self.main_canvas.tag_bind('delete_line',"<Leave>",self.delete_line_cursor_end)
         self.main_canvas.tag_bind('delete_line',"<Button-1>",self.delete_line_action)   
             
@@ -764,12 +827,11 @@ class Gui:
         Checkbutton(frame,variable=self.error_var,text=_('Send error reports')).grid(row=4,column=0,columnspan=2,sticky=W)
 
     def save_main_config(self):
-        d={}
-        d['max_q']=int(self.max_q_var.get())
+        d = {'max_q': int(self.max_q_var.get())}
         d['check_updates']=int(self.check_updates_var.get())
         d['send_errors']=int(self.error_var.get())
         d['vertical_nodes']=self.vert_nodes_var.get()
-        
+
         return d
 
 
@@ -781,13 +843,19 @@ class Gui:
         win=self.set_top_w
 
         if plug:
-            win.title(plug.plugin.name+' '+_('settings'))
-            win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file=str(plug.path)+'/icon.png'))
-            frame=Labelframe(win,text=plug.plugin.name+' '+_('settings'))
+            win.title(f'{plug.plugin.name} ' + _('settings'))
+            win.tk.call(
+                'wm',
+                'iconphoto',
+                win._w,
+                PhotoImage(file=f'{str(plug.path)}/icon.png'),
+            )
+
+            frame = Labelframe(win, text=f'{plug.plugin.name} ' + _('settings'))
         else:
             win.title(_('settings'))
             win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file='app/icons/stream.png'))
-            frame=Frame(win)            
+            frame=Frame(win)
         win.focus_force()
         frame.pack(fill=X,padx=5,pady=5)
         actions=Frame(win)
@@ -795,7 +863,7 @@ class Gui:
         Button(actions,text=_('Cancel'),image=icons.cancel,compound='left',command=self.cancel_settings).pack(side=RIGHT,padx=5,pady=5)
         Button(actions,text=_('Save'),image=icons.done,compound='left',command=lambda:self.save_config(uid)).pack(side=RIGHT,padx=5,pady=5)
 
-        
+
         self.app.config_action(uid,frame)
 
     def favorite_action(self,uid):
@@ -809,7 +877,13 @@ class Gui:
         dark_title_bar(self.set_top_w)
         win=self.set_top_w
         win.title(_('Add to favorite: ')+plug.plugin.name)
-        win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file=str(plug.path)+'/icon.png'))
+        win.tk.call(
+            'wm',
+            'iconphoto',
+            win._w,
+            PhotoImage(file=f'{str(plug.path)}/icon.png'),
+        )
+
         win.focus_force()
         frame=Labelframe(win,text=_('Save As...'))
         frame.pack(fill=X,padx=5,pady=5)
@@ -840,8 +914,9 @@ class Gui:
         self.app.save_state()
 
     def save_as_state(self):
-        d=filedialog.asksaveasfilename(defaultextension=".tube",filetypes=[("PhotoMachine files", ".tube")])
-        if d:
+        if d := filedialog.asksaveasfilename(
+            defaultextension=".tube", filetypes=[("PhotoMachine files", ".tube")]
+        ):
             self.app.save_state(filename=d)
     def new_state(self):
         if self.app.is_start:return
@@ -852,8 +927,9 @@ class Gui:
 
     def load_state(self):
         if self.app.is_start:return
-        d=filedialog.askopenfilename(defaultextension=".tube",filetypes=[("PhotoMachine files", ".tube")])
-        if d:
+        if d := filedialog.askopenfilename(
+            defaultextension=".tube", filetypes=[("PhotoMachine files", ".tube")]
+        ):
             self.app.load_state(d)
 
 
@@ -885,7 +961,16 @@ class Gui:
         for plug in self.app.plug_actions:
             win=RunInCanvas(plug)
             self.canv_runs.append(win)
-            self.main_canvas.create_window(win.x,win.y,window=win.frame,tags=(win.plugin.id,str(win.plugin.id)+'-runs','runs'),width=300,height=90,anchor=CENTER)
+            self.main_canvas.create_window(
+                win.x,
+                win.y,
+                window=win.frame,
+                tags=(win.plugin.id, f'{str(win.plugin.id)}-runs', 'runs'),
+                width=300,
+                height=90,
+                anchor=CENTER,
+            )
+
 
         self.app.start()
 
@@ -895,10 +980,12 @@ class Gui:
         self.app.stop()
 
     def check_configs(self):
-        out_warn=[]
-        for plug in self.app.plug_actions:
-            if plug.plugin.need_config and not plug.settings:
-                out_warn.append(plug.plugin.name)
+        out_warn = [
+            plug.plugin.name
+            for plug in self.app.plug_actions
+            if plug.plugin.need_config and not plug.settings
+        ]
+
         if out_warn:messagebox.showerror(_('Config error'), _('These actions are not configured')+':\n'+'\n'.join(out_warn))
 
         return not(out_warn)

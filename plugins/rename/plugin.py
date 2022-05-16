@@ -83,8 +83,7 @@ class Plugin:
         
 
     def save_config(self):
-        d={}
-        d['templ']=self.templ_var.get()
+        d = {'templ': self.templ_var.get()}
         d['digits']=int(self.digits_var.get())
         d['time']=int(self.time_var.get())
         d['autoclean']=int(self.auto_var.get())

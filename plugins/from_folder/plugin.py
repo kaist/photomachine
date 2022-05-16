@@ -74,8 +74,7 @@ class Plugin:
         self.clean_but['text']=_('Clear now')+' (0)'
 
     def save_config(self):
-        d={}
-        d['path']=self.path_var.get()
+        d = {'path': self.path_var.get()}
         d['metadata']=int(self.metadata_var.get())
         d['subfolder']=int(self.subfolder_var.get())
         d['remember']=int(self.remember_var.get())

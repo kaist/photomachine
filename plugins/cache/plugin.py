@@ -26,9 +26,7 @@ class Plugin:
         self.clean_but['text']=_('Clear now')+' (0)'
 
     def save_config(self):
-        d={}
-        d['autoclean']=self.auto_var.get()
-        return d
+        return {'autoclean': self.auto_var.get()}
 
 
 

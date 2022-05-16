@@ -26,8 +26,7 @@ class Plugin:
 		Radiobutton(bb, text=_("Top/Bottom"),variable=self.left_var,value=0).pack(side=LEFT,padx=5,pady=5)	
 
 	def save_config(self):
-		d={}
-		d['fullscreen']=self.full_var.get()
+		d = {'fullscreen': self.full_var.get()}
 		d['split']=self.split_var.get()
 		d['left']=self.left_var.get()
 		return d

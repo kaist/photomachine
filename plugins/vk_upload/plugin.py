@@ -43,8 +43,7 @@ class Plugin:
         webbrowser.open('https://photo-machine.ru/vk_connect/')
 
     def save_config(self):
-        d={}
-        d['key']=self.key_var.get()
+        d = {'key': self.key_var.get()}
         d['album']=self.album_var.get()
         d['caption']=self.caption_var.get()
         return d

@@ -10,15 +10,16 @@ from app.utils import *
 @run_thread
 def run(store,settings,image,vars):
     if image.size[0]>image.size[1]:
-        if settings['hpath']:
-            frame=Image.open(settings['hpath'])
-        else:
-            frame=Image.open(settings['vpath'])
+        frame = (
+            Image.open(settings['hpath'])
+            if settings['hpath']
+            else Image.open(settings['vpath'])
+        )
+
+    elif settings['vpath']:
+        frame=Image.open(settings['vpath'])
     else:
-        if settings['vpath']:
-            frame=Image.open(settings['vpath'])
-        else:
-            frame=Image.open(settings['hpath'])
+        frame=Image.open(settings['hpath'])
 
     if int(settings['contain'])==0:
         image=ImageOps.fit(image,frame.size)

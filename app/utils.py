@@ -57,7 +57,10 @@ def run_thread(fn):
 class PluginStore:
     def __init__(self,pname):
         self.__dict__['v']={}
-        self.__dict__['plug_path']=Path().home()/Path('.photomachine')/Path(pname+'.store')
+        self.__dict__['plug_path'] = (
+            Path().home() / Path('.photomachine') / Path(f'{pname}.store')
+        )
+
         if not self.__dict__['plug_path'].parent.exists():
             self.__dict__['plug_path'].parent.mkdir()
         if self.__dict__['plug_path'].exists():
