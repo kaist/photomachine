@@ -41,7 +41,6 @@ class Gui:
         self.download_list=[]
         root.attributes("-topmost",True)
         self.digicam_url='http://127.0.0.1:5513'
-        self.digicam_live='http://127.0.0.1:5514/live'
         self.root_path=Path('plugins/photobooth/theme/')
         self.background_img=PhotoImage(file=self.root_path/'background.png')
         self.approve_img=PhotoImage(file=self.root_path/'approve.png')

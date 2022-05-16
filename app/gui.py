@@ -244,7 +244,7 @@ class Gui:
         self.ps_label.pack(side=LEFT,padx=5,pady=5)
 
         Button(misc_frame,image=icons.settings,width=1,compound='left',command=self.config_action).pack(side=LEFT,padx=5,pady=5)
-        Button(misc_frame,image=icons.help,width=1,compound='left').pack(side=LEFT,padx=5,pady=5)        
+        Button(misc_frame,image=icons.help,width=1,compound='left',command=self.about_plugin).pack(side=LEFT,padx=5,pady=5)        
         Button(misc_frame,image=icons.machine,width=10,text=_('About'),compound='left').pack(side=LEFT,padx=5,pady=5)   
 
         act_frame=Labelframe(self.top_frame,text=_('Run')) 
@@ -416,8 +416,11 @@ class Gui:
 
 
 
-    def about_plugin(self,plug):
-        p=Path(plug.path)
+    def about_plugin(self,plug=None):
+        if plug:
+            p=Path(plug.path)
+        else:
+            p=Path('app')
         lang, enc = locale.getdefaultlocale()
         try:
             html=io.open(p/Path('locale')/(lang+'_info.html'),mode="r", encoding="utf-8").read()
@@ -427,16 +430,20 @@ class Gui:
             except:
                 html=_('This plugin has no help')
         win=Toplevel(self.root)
-        win.geometry('500x300')
+        win.geometry('900x600')
         self.center_window(win)
         
         dark_title_bar(win)
-        win.title(plug.name+' '+_('help'))
-        win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file=str(plug.path)+'/icon.png'))
+        if plug:
+            win.title(plug.name+' '+_('help'))
+            win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file=str(plug.path)+'/icon.png'))
+        else:
+            win.title(_('PhotoMachine')+' '+_('help'))
+            win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file='app/icons/stream.png'))            
         win.focus_force()
         Button(win,text=_('Ok'),image=icons.done,compound='left',command=lambda:win.destroy()).pack(side=BOTTOM,padx=5,pady=5,fill=X)
         h=HTMLScrolledText(win,html=html)
-        h.pack(side=TOP,padx=5,pady=5)
+        h.pack(side=TOP,padx=5,pady=5,fill=BOTH,expand=True)
 
 
         
