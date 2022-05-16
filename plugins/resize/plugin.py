@@ -30,8 +30,7 @@ class Plugin:
 		
 
 	def save_config(self):
-		d={}
-		d['width']=int(self.mxvar.get())
+		d = {'width': int(self.mxvar.get())}
 		d['height']=int(self.myvar.get())
 		return d
 

@@ -16,7 +16,7 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
         if settings['subfolder']==0:
             p=Path(settings['path']).glob('*.*')
         else:
-            p=Path(settings['path']).glob('**/*')        
+            p=Path(settings['path']).glob('**/*')
         for x in p:
             if settings['remember']==1:
                 try:i_list=store.image_list
@@ -52,10 +52,7 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
 
             try:t=img.getexif()
             except:t={}
-            exif={}
-            for e in t:
-                exif[e]=t[e]
-
+            exif = {e: t[e] for e in t}
             for o in output_q:
                 vars={'filename':filename,'count':count,'exif':exif,'profile':icc_profile,'loaded':loaded,'xmp':xmp}
                 message=[self_id,'Load file {0} \n(count: {1})'.format(x.name,count)]
@@ -67,9 +64,8 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
             count+=1
             time.sleep(0.1)
         message_q.put([self_id,'All done!'])
-        if settings['watch']:
-            message_q.put([self_id,f'Waiting...\n(count: {count})'])
-            time.sleep(settings['interval'])
-        else:
+        if not settings['watch']:
             break
+        message_q.put([self_id,f'Waiting...\n(count: {count})'])
+        time.sleep(settings['interval'])
 

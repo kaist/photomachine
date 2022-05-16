@@ -21,17 +21,18 @@ class Plugin:
     def start_config(self,frame,plug):
         self.plug=plug
         self.frame=frame
-        self.store=PluginStore(Path(plug.path).parts[-1]) 
+        self.store=PluginStore(Path(plug.path).parts[-1])
         enc=locale.getpreferredencoding()
         if is_windows:
             data = subprocess.check_output(['netsh', 'wlan', 'show', 'profiles']).decode(enc).split('\n')
-            aps=[]
-            for x in data:
-                if ' : ' in x:
-                    aps.append(x.split(' : ')[1].replace('\n','').replace('\r',''))
+            aps = [
+                x.split(' : ')[1].replace('\n', '').replace('\r', '')
+                for x in data
+                if ' : ' in x
+            ]
 
             self.connect_var=BooleanVar()
-            self.connect_var.set(plug.settings.get('connect',0))      
+            self.connect_var.set(plug.settings.get('connect',0))
             Checkbutton(frame, text=_("Auto connect to ezShare WiFi"),variable=self.connect_var,onvalue=1,offvalue=0).grid(row=0,column=0,columnspan=1,padx=5,pady=5,sticky=W)
 
             self.ap_var=StringVar()
@@ -40,10 +41,10 @@ class Plugin:
             self.ap_combo.grid(row=0,column=1,padx=5,pady=5,sticky=W)
             self.ap_combo['values']=aps
 
- 
+
 
             self.disconnect_var=BooleanVar()
-            self.disconnect_var.set(plug.settings.get('disconnect',0))      
+            self.disconnect_var.set(plug.settings.get('disconnect',0))
             Checkbutton(frame, text=_("After downloading, connect to another WiFi"),variable=self.disconnect_var,onvalue=1,offvalue=0).grid(row=1,column=0,columnspan=1,padx=5,pady=5,sticky=W)
 
             self.dis_var=StringVar()

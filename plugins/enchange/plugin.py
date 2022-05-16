@@ -13,14 +13,14 @@ class Plugin:
 
 
 	def force_int(self,varname,index,mode):
-		var= getattr(self, varname+'_var')
+		var = getattr(self, f'{varname}_var')
 		try:newval=int(var.get())
 		except:
 			newval=100
 		var.set(newval)
 
 	def force_float(self,varname,index,mode):
-		var= getattr(self, varname+'_var')
+		var = getattr(self, f'{varname}_var')
 		try:newval=round(float(var.get()),1)
 		except:
 			newval=1
@@ -91,11 +91,19 @@ class Plugin:
 		self.threshold_var.trace('w',self.force_int)	
 
 	def save_config(self):
-		d={}
-		for name in ['color','contrast','brightness','sharpness','enable_unsharp','radius','percent','threshold']:
-			d[name]=getattr(self, name+'_var').get()
-
-		return d
+		return {
+		    name: getattr(self, f'{name}_var').get()
+		    for name in [
+		        'color',
+		        'contrast',
+		        'brightness',
+		        'sharpness',
+		        'enable_unsharp',
+		        'radius',
+		        'percent',
+		        'threshold',
+		    ]
+		}
 
 
 

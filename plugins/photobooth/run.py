@@ -111,12 +111,11 @@ class Gui:
 
 
     def start_booth(self,event=None):
-        if event:
-            if event.y<self.canvas.winfo_height()/2:return
-
+        if event and event.y < self.canvas.winfo_height() / 2:
+            return
         self.canvas.tag_unbind('image', '<Button-1>')
         sys.stdout.flush()
-        resp=requests.get(self.digicam_url+'/liveview.html?CMD=LiveViewWnd_Show')
+        resp = requests.get(f'{self.digicam_url}/liveview.html?CMD=LiveViewWnd_Show')
         self.x,self.y=self.canvas.winfo_width(),self.canvas.winfo_height()
 
 
@@ -134,7 +133,11 @@ class Gui:
         count=0
 
         while True:
-            r=requests.get(self.digicam_url+'/liveview.jpg?rand='+str(time.time()),stream=True)
+            r = requests.get(
+                f'{self.digicam_url}/liveview.jpg?rand={str(time.time())}',
+                stream=True,
+            )
+
 
             try:img=PIL.Image.open(r.raw)
             except:continue
@@ -146,19 +149,17 @@ class Gui:
                 count+=1
                 if count>self.img_count-1:
                     break
-        resp=requests.get(self.digicam_url+'/?CMD=LiveViewWnd_Hide')
+        resp = requests.get(f'{self.digicam_url}/?CMD=LiveViewWnd_Hide')
         self.final_booth()
 
 
 
     def final_booth(self):
         for x in self.download_list:
-            r=requests.get(self.digicam_url+'/image/'+x,stream=True)
+            r = requests.get(f'{self.digicam_url}/image/{x}', stream=True)
             i=PIL.Image.open(r.raw)
             t=i.getexif()
-            exif={}
-            for e in t:
-                exif[e]=t[e]
+            exif = {e: t[e] for e in t}
             for o in self.output_q:
                 o.put([i.copy(),{'filename':x,'exif':exif,'callback':self.self_q}])
 
@@ -202,7 +203,7 @@ class Gui:
     def parse_img_list(self,event=None,wait=False):
         ret=[]
         while True:
-            r=requests.get(self.digicam_url+'/slide.html')
+            r = requests.get(f'{self.digicam_url}/slide.html')
             try:tree = lxml.html.fromstring(r.text)
             except:continue
             try:res=tree.xpath('//figcaption[@itemprop="caption description"]')
@@ -222,7 +223,7 @@ class Gui:
 
 
     def shoot(self):
-        r=requests.get(self.digicam_url+'/?CMD=Capture')
+        r = requests.get(f'{self.digicam_url}/?CMD=Capture')
         img=self.parse_img_list(wait=True)
         for x in img:
             self.download_list.append(x)

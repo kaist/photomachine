@@ -41,8 +41,7 @@ class Plugin:
 		Radiobutton(frame, text=_("Fit a frame into an image"),variable=self.contain_var,value=1).grid(row=4,column=0,columnspan=2,padx=5,pady=5,sticky=W)
 
 	def save_config(self):
-		d={}
-		d['hpath']=self.hpath_var.get()
+		d = {'hpath': self.hpath_var.get()}
 		d['vpath']=self.vpath_var.get()
 		d['contain']=self.contain_var.get()
 		return d

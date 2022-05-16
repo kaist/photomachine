@@ -28,8 +28,7 @@ class Plugin:
 		Checkbutton(frame, text=_("Send as document"),variable=self.asdoc_var,onvalue=1,offvalue=0).grid(row=2,column=0,columnspan=2,padx=5,pady=5,sticky=W)	
 
 	def save_config(self):
-		d={}
-		d['key']=self.key_var.get()
+		d = {'key': self.key_var.get()}
 		d['caption']=self.caption_var.get()
 		d['asdoc']=self.asdoc_var.get()
 		return d

@@ -21,9 +21,7 @@ class Plugin:
         self.ifaces=[]
         for ifaceName in interfaces():
             addresses = [i['addr'] for i in ifaddresses(ifaceName).setdefault(AF_INET, [{'addr':None}] )]
-            for y in addresses:
-                if y:
-                    self.ifaces.append(y)
+            self.ifaces.extend(y for y in addresses if y)
         print(self.ifaces)
 
 
@@ -33,14 +31,7 @@ class Plugin:
         p=self.cur_path/Path('themes')
         self.int_themes=[]
         th=p.glob('*')
-        for x in th:
-            self.int_themes.append(x.parts[-1])
-
-
-
-
-
-
+        self.int_themes.extend(x.parts[-1] for x in th)
         self.external_var=IntVar()
         self.external_var.set(plug.settings.get('external',0))
         Radiobutton(frame, text=_("Built-in themes"),variable=self.external_var,value=0).grid(row=0,column=0,columnspan=1,padx=5,pady=5,sticky=W)
@@ -64,8 +55,8 @@ class Plugin:
 
 
 
-        
-        
+
+
 
         self.auto_var=BooleanVar()
         self.auto_var.set(plug.settings.get('autoclean',0))
@@ -93,7 +84,7 @@ class Plugin:
         self.upd_label()
 
     def force_int(self,varname,index,mode):
-        var= getattr(self, varname+'_var')
+        var = getattr(self, f'{varname}_var')
         try:newval=int(var.get())
         except:
             newval=8080
@@ -101,10 +92,7 @@ class Plugin:
         self.upd_label()
 
     def upd_label(self):
-        ips=[]
-        for x in self.ifaces:
-            ips.append(f'http://{x}:{self.port_var.get()}')
-
+        ips = [f'http://{x}:{self.port_var.get()}' for x in self.ifaces]
         self.info_var.set(_('After the start, the server will be available at addresses')+':\n\n'+'\n'.join(ips))
 
 
@@ -113,8 +101,7 @@ class Plugin:
         self.clean_but['text']=_('Clear now')+' (0)'
 
     def save_config(self):
-        d={}
-        d['path']=self.path_var.get()
+        d = {'path': self.path_var.get()}
         d['autoclean']=int(self.auto_var.get())
         d['theme']=self.theme_var.get()
         d['external']=int(self.external_var.get())

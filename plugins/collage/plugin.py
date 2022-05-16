@@ -17,7 +17,7 @@ class Plugin:
         self.need_config=True
 
     def force_int(self,varname,index,mode):
-        var= getattr(self, varname+'_var')
+        var = getattr(self, f'{varname}_var')
         try:newval=int(var.get())
         except:
             try:newval=''.join(char for char in str(var.get()) if char.isdigit())
@@ -170,27 +170,25 @@ class Plugin:
         self.update_list()
 
     def save_element(self):
-        el={}
-        el['x']=int(self.posx_var.get())
+        el = {'x': int(self.posx_var.get())}
         el['y']=int(self.posy_var.get())
         el['sizex']=int(self.sizex_var.get())
-        el['sizey']=int(self.sizey_var.get())   
-        el['contain']=int(self.contain_var.get())   
+        el['sizey']=int(self.sizey_var.get())
+        el['contain']=int(self.contain_var.get())
         try:
             self.elements[self.cur_element]=el
         except:pass
-        
+
         self.update_list()
 
         try:self.lst.select_set(self.cur_element)
         except:pass
 
     def add_element(self):
-        el={}
-        el['x']=int(self.posx_var.get())
+        el = {'x': int(self.posx_var.get())}
         el['y']=int(self.posy_var.get())
         el['sizex']=int(self.sizex_var.get())
-        el['sizey']=int(self.sizey_var.get())   
+        el['sizey']=int(self.sizey_var.get())
         el['contain']=int(self.contain_var.get())
         self.elements.append(el)
         self.update_list()
@@ -198,7 +196,7 @@ class Plugin:
     def update_list(self):
         self.lst.delete(0,END)
         for n,x in enumerate(self.elements):
-            g='fit' if not(x['contain']) else 'cover'
+            g = 'cover' if x['contain'] else 'fit'
             s=f'#{n+1:2}  Pos X:{x["x"]:4} Pos Y:{x["y"]:4} Size: {x["sizex"]:4}x{x["sizey"]:4} ({g})'
             self.lst.insert(END,s)
         self.del_but['text']=_('Remove')
@@ -206,8 +204,7 @@ class Plugin:
         self.update_image()
 
     def save_config(self):
-        d={}
-        d['hsize']=self.hsize_var.get()
+        d = {'hsize': self.hsize_var.get()}
         d['vsize']=self.vsize_var.get()
         d['elements']=self.elements
         d['timeout']=self.timeout_var.get()

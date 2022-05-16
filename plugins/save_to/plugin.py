@@ -29,8 +29,7 @@ class Plugin:
         self.format_combo['values']=formats 
 
     def save_config(self):
-        d={}
-        d['path']=self.path_var.get()
+        d = {'path': self.path_var.get()}
         d['format']=self.format_var.get()
         return d
 

@@ -24,7 +24,7 @@ class Web:
 
 
     def server_static(self,filepath):
-        return static_file(filepath, root=self.root_path+'/static')
+        return static_file(filepath, root=f'{self.root_path}/static')
 
 
     def index(self):
@@ -32,9 +32,11 @@ class Web:
         return template('index.html', images={})
 
     def get_json(self):
-        output=[]
-        for x in self.store.image_list:
-            output.append({'img':'images/'+Path(x[1]['filename']).parts[-1]})
+        output = [
+            {'img': 'images/' + Path(x[1]['filename']).parts[-1]}
+            for x in self.store.image_list
+        ]
+
         response.content_type = 'application/json'
         return json.dumps(output)
 

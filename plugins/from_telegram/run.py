@@ -17,7 +17,7 @@ async def start_socket(settings,message_q,output_q,self_id):
     except:
         await asyncio.sleep(1)
         await start_socket(settings,message_q,output_q,self_id)    
-        return   
+        return
     await websocket.send(
             json.dumps(
                 {
@@ -38,10 +38,7 @@ async def start_socket(settings,message_q,output_q,self_id):
         r.raw.decode_content = True
         img=Image.open(r.raw)
         t=img.getexif()
-        exif={}
-        for e in t:
-            exif[e]=t[e]
-
+        exif = {e: t[e] for e in t}
         for o in output_q:
             o.put([img.copy(),{'filename':message['filename'],'exif':exif}])
 

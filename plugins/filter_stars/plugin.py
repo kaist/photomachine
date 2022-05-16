@@ -29,8 +29,7 @@ class Plugin:
 
 
     def save_config(self):
-        d={}
-        d['rating']=self.rat_combo.current()
+        d = {'rating': self.rat_combo.current()}
         d['if']=self.if_combo.current()
         return d
 

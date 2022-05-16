@@ -41,9 +41,7 @@ class Plugin:
         from photoshop import Session
         app = ps.Application()
         self.all_actions=json.loads(app.doJavaScript(open(self.cur_path/'get_actions.js').read()))
-        first_level=[]
-        for x in self.all_actions:
-            first_level.append(x['name'])
+        first_level = [x['name'] for x in self.all_actions]
         self.sets_combo['values']=first_level
         self.sets_var.set(first_level[0])
         self.select_1_level(event=None)
@@ -54,8 +52,7 @@ class Plugin:
         del app          
 
     def save_config(self):
-        d={}
-        d['sets']=self.sets_var.get()
+        d = {'sets': self.sets_var.get()}
         d['action']=self.action_var.get()
         return d
 

@@ -17,9 +17,7 @@ class Plugin:
 
 
 	def save_config(self):
-		d={}
-		d['fullscreen']=self.full_var.get()
-		return d
+		return {'fullscreen': self.full_var.get()}
 
 			
 

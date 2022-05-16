@@ -22,9 +22,7 @@ class Plugin:
 
 
     def save_config(self):
-        d={}
-        d['url']=self.url_var.get()
-        return d
+        return {'url': self.url_var.get()}
 
 
 

@@ -41,8 +41,7 @@ class Plugin:
 
 
     def save_config(self):
-        d={}
-        d['rotate']=int(self.rat_combo.current())
+        d = {'rotate': int(self.rat_combo.current())}
         d['need_rotate']=self.need_rotate.get()
         d['if']=int(self.if_combo.current())
         d['flip_h']=self.flip_h_var.get()

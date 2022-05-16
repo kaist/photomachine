@@ -20,9 +20,7 @@ class Plugin:
 	
 
 	def save_config(self):
-		d={}
-		d['key']=self.key_var.get()
-		return d
+		return {'key': self.key_var.get()}
 
 	def select_folder(self):
 		d=filedialog.askdirectory()
