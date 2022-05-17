@@ -34,7 +34,7 @@ def run(store,settings,image,vars):
     image.thumbnail((7500,7500))
     print(image.size)
     fp=io.BytesIO()
-    image.save(fp,format="jpeg",exif=vars.get('exif',None),icc_profile=vars.get('profile',None),quality=80,optimize=True)
+    image.save(fp,format="jpeg",exif=image.getexif(),icc_profile=vars.get('profile',None),quality=80,optimize=True)
     fp.seek(0)
     session = vk.Session(access_token=settings['key'])
     api = vk.API(session)

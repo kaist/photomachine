@@ -16,7 +16,7 @@ import lxml.html
 
 
 root=Tk()
-root.title('Viewer')
+root.title('Photobooth')
 
 
 

@@ -3,3 +3,5 @@ To VK album=В альбом VK
 Authorize=Авторизоваться
 In order to get a token, you need to log in to the VK. To do this, just click on the button.=Для того чтобы получить токен, нужно авторизоваться в ВК. Для этого просто нажмите на кнопку.
 Caption=Подпись к фото
+Token=Токен
+Link to album=Ссылка на альбом

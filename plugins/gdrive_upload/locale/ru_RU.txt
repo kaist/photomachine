@@ -1,0 +1,6 @@
+[LANG]
+To GoogleDrive=В GoogleDrive
+Authorize=Авторизоваться
+To use the plugin, log in to google drive=Для работы плагина, авторизуйтесь в Google Drive.
+Link to folder=Ссылка на папку
+You are logged in to GoogleDrive=Вы авторизованы в GoogleDrive

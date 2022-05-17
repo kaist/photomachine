@@ -12,7 +12,7 @@ import json
 @retry_on_error
 def run(store,settings,image,vars):
     fp=io.BytesIO()
-    image.save(fp,format="jpeg",exif=vars.get('exif',None),icc_profile=vars.get('profile',None),quality=80,optimize=True)
+    image.save(fp,format="jpeg",exif=image.getexif(),icc_profile=vars.get('profile',None),quality=80,optimize=True)
     fp.seek(0)
     files = {'image': fp}
     values = {'fname':vars['filename'],'caption':settings['caption'],'key':settings['key'],'asdoc':settings['asdoc']}
