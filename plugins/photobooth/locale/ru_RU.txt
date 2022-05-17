@@ -1,2 +1,9 @@
 [LANG]
 PhotoBooth=Фотобудка
+Use internal theme=Использовать встроенную тему
+Use external theme=Использовать внешнюю тему
+Theme Folder=Папка с темой
+Digicam server URL (see help)=Digicam сервер URL (смотри помощь)
+Number of photos in the series=Количество фотографии в серии
+Preview time (seconds)=Время предпросмотра (секунды)
+Enable confirmation from the user (dont forget about the photobooth confirmation plugin)=Включить подтверждение от пользователя (не забудьте плагин фотобудка подтверждение)

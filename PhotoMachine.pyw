@@ -320,6 +320,7 @@ class App:
         self.all_process=[]
         self.is_start=False
         self.gui.start_but['state']=NORMAL
+        
 
     def on_closing(self):
         self.stop()
