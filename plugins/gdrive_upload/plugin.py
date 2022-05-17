@@ -62,7 +62,7 @@ class Plugin:
         self.album_var.set(plug.settings.get('album',''))
         Entry(frame,width=40,textvariable=self.album_var).grid(row=3,column=1,padx=5,pady=5,sticky=E)
 
-        if plug.settings['creds']:
+        if plug.settings.get('creds',False):
             self.ok_label.grid(row=2,column=0,padx=5,pady=10,sticky=EW,columnspan=2)
             self.a_label.grid_forget()
             self.b_button.grid_forget()           

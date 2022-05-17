@@ -347,7 +347,7 @@ class Gui:
 
 
         self.root.after(100,self.update_ps)
-        self.root.after(1500,self.dis_splash)
+        self.root.after(2500,self.dis_splash)
   
 
     def update_pstext(self,cpu,mem):

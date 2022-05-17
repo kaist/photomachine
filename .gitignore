@@ -153,3 +153,4 @@ cython_debug/
 
 
 .vscode/
+plugins/gdrive_upload/oauth-credentials.json
