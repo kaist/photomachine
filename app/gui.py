@@ -206,6 +206,7 @@ class Gui:
     def __init__(self,root):
         self.root=root
         self.root.option_add("*tearOff", False)
+
         style = Style(self.root)
         self.root.tk.call('source', 'app/theme/forest-dark.tcl')
         style.theme_use("forest-dark")
@@ -219,6 +220,9 @@ class Gui:
         self.root.title('PhotoMachine')
         scale=self.root.winfo_fpixels('1i')/72
         self.root.tk.call('tk', 'scaling', scale)
+
+        self.root.configure(background='black')
+        self.root.update_idletasks()
 
 
 
@@ -319,6 +323,7 @@ class Gui:
 
         self.main_canvas=Canvas(self.canvas_frame,width=1000,height=1000,scrollregion=(0,0,1000,1000))
         self.main_canvas.configure(bg='#121212')
+        
 
         self.hbar=Scrollbar(self.canvas_frame,orient=HORIZONTAL)
         self.hbar.pack(side=BOTTOM,fill=X)
@@ -341,6 +346,8 @@ class Gui:
         self.main_canvas.pack()
 
         self.main_canvas.bind("<MouseWheel>", self.canvas_scroll)
+
+        
 
         root.after(1000,self.upd_canv)
 

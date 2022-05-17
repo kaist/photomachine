@@ -81,7 +81,7 @@ class Plugin:
 
         self.sizey_var=IntVar(name='sizey')
         self.sizey_var.set(480)
-        Label(bf,text=_('Width')).grid(row=1,column=2,padx=5,pady=5,sticky=E)
+        Label(bf,text=_('Height')).grid(row=1,column=2,padx=5,pady=5,sticky=E)
         Entry(bf,textvariable=self.sizey_var,width=5).grid(row=1,column=3,padx=5,pady=5,sticky=W)
         self.sizey_var.trace('w',self.force_int)
 

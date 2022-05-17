@@ -31,7 +31,7 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
             try:
                 try:img=Image.open(x)
                 except:
-                    img=check_raw(x)
+                    continue
 
                 try:xmp=img.getxmp()
                 except:xmp={}

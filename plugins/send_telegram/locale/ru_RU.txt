@@ -1,2 +1,3 @@
 [LANG]
 To Telegram Group=В группу Telegram
+Send as document=Отправить как документ

@@ -1,3 +1,5 @@
 [LANG]
 From Telegram Group=Из группы Telegram
 Key=Ключ
+Ask the bot @photomachine_bot for the key=Спросите ключ у  бота @photomachine_bot
+Ask @photomachine_bot=Спросить @photomachine_bot
