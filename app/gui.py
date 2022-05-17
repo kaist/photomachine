@@ -92,7 +92,7 @@ class PlugWidget:
         self.button.pack(side=LEFT,padx=5,pady=3)
 
         self.info_button=Button(self.b_fr,width=0,image=icons.info,command=lambda: gui.about_plugin(plugin),compound='left')
-        self.info_button.pack(side=RIGHT,padx=5,pady=3)
+        self.info_button.pack(side=LEFT,padx=5,pady=3)
 
 
 class FavoriteWidget:
@@ -120,7 +120,7 @@ class PlugInCanvas:
         self.frame=Frame(width=250,height=100,relief=SOLID)
         self.icon=Label(self.frame,image=plugin.plugin.icon)
         self.icon.grid(row=0,column=0,rowspan=2,padx=5,pady=5,sticky=N)
-        self.l_frame=Frame(self.frame,style='new.TFrame')
+        self.l_frame=Frame(self.frame)
         self.l_frame.grid(row=0,column=1,columnspan=2,pady=2,sticky="nsew")
         self.name_label=Label(self.l_frame,text=plugin.name,image=icons.__getattr__(plugin.plugin.category),compound='left',width=21,justify=LEFT)
         self.name_label.pack(side=LEFT,padx=5,pady=2,fill=X)
@@ -397,6 +397,7 @@ class Gui:
     def center_window(self,win):
         win.resizable(0,0)
         win.attributes('-toolwindow', True)
+        win.transient(self.root)
 
         """
         centers a tkinter window
@@ -862,6 +863,8 @@ class Gui:
         actions.pack(fill=X,padx=5,pady=5)
         Button(actions,text=_('Cancel'),image=icons.cancel,compound='left',command=self.cancel_settings).pack(side=RIGHT,padx=5,pady=5)
         Button(actions,text=_('Save'),image=icons.done,compound='left',command=lambda:self.save_config(uid)).pack(side=RIGHT,padx=5,pady=5)
+
+
 
 
         self.app.config_action(uid,frame)

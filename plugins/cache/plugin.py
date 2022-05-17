@@ -1,4 +1,5 @@
-
+from app.utils import DATA_PATH
+import shutil 
 
 class Plugin:
     def __init__(self):
@@ -22,7 +23,13 @@ class Plugin:
         self.clean_but.grid(row=0,column=1,columnspan=1,padx=5,pady=5,sticky=W)
 
     def clean_db(self):
+        path=DATA_PATH/Path('cache')
+        try:
+            shutil.rmtree(path)
+        except:pass
         self.store.cache=[]
+
+
         self.clean_but['text']=_('Clear now')+' (0)'
 
     def save_config(self):

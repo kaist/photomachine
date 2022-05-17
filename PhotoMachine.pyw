@@ -2,18 +2,30 @@ import sys,os
 sys.dont_write_bytecode=True
 from pathlib import Path
 
+VERSION='1.05'
+PORTABLE=False
+DATA_PATH=Path('data') if PORTABLE else Path().home()/Path('.photomachine')
+
+
+os.environ['DATA_PATH']=str(DATA_PATH)
+
 if hasattr(sys,"frozen"):
     os.chdir(os.path.dirname(sys.executable))
-    p=Path().home()/Path('.photomachine')/Path('error.txt')
+    p=DATA_PATH/Path('error.txt')
     if not p.parent.exists():
         p.parent.mkdir()
     sys.stderr=open(p,'a+')
 
+if not DATA_PATH.exists():
+    DATA_PATH.mkdir()
 
 
-VERSION='1.05'
+
+
+
+
 from importlib.machinery import SourceFileLoader
-from app.utils import PluginStore
+from app.utils import PluginStore,DATA_PATH
 import multiprocessing
 
 
@@ -32,7 +44,7 @@ def start_plug(path,settings,message_q,output_q,self_id,self_q=None):
 
 class App:
     def __init__(self,gui,open_file,startup_start):
-        p=Path().home()/Path('.photomachine')/Path('main_settings.json')
+        p=DATA_PATH/Path('main_settings.json')
         self.settings={'max_q':10,
                         'check_updates':True,
                         'send_errors':True,
@@ -49,7 +61,7 @@ class App:
         self.version=VERSION
         self.favorites=[]
 
-        p=Path().home()/Path('.photomachine')/Path('favorites.items')
+        p=DATA_PATH/Path('favorites.items')
         if p.exists():
             with open(p,'rb') as f:
                 try:self.favorites=pickle.load(f)
@@ -93,7 +105,7 @@ class App:
         except:pass
 
     def check_errors(self):
-        p=Path().home()/Path('.photomachine')/Path('error.txt')
+        p=DATA_PATH/Path('error.txt')
         if not p.exists():return
         sys.stderr.close()
         sys.stderr=sys.stdout
@@ -174,7 +186,7 @@ class App:
             plug.settings=plug.plugin.save_config() 
         else:
             conf=self.gui.save_main_config()
-            p=Path().home()/Path('.photomachine')/Path('main_settings.json')
+            p=DATA_PATH/Path('main_settings.json')
             self.settings=conf
             if not p.parent.exists():p.parent.mkdir()
             with open(p,'w') as f:
@@ -186,7 +198,7 @@ class App:
 
     def remove_favorite(self,sets):
         self.favorites.remove(sets)
-        p=Path().home()/Path('.photomachine')/Path('favorites.items')
+        p=DATA_PATH/Path('favorites.items')
         if not p.parent.exists():
             p.parent.mkdir()
         with open(p,'wb') as f:
@@ -195,7 +207,7 @@ class App:
     def save_favorite(self,uid,name):
         plug=self.find_by_uid(uid)
         self.favorites.append([str(plug.plugin.path),plug.settings,name])
-        p=Path().home()/Path('.photomachine')/Path('favorites.items')
+        p=DATA_PATH/Path('favorites.items')
         if not p.parent.exists():
             p.parent.mkdir()
         with open(p,'wb') as f:

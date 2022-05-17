@@ -6,15 +6,18 @@ import sys
 from app.utils import *
 from queue import Queue
 import threading
-
+import shutil
 
 q=Queue()
 
-path=Path().home()/Path('.photomachine')/Path('cache')
+path=DATA_PATH/Path('cache')
 
 def pusher(store,output_q,self_id,message_q):
 	while True:
-		tarr=store.cache
+		try:tarr=store.cache
+		except:
+			store.cache=[]
+			tarr=store.cache
 		try:el=tarr.pop(0)
 		except:
 			time.sleep(0.01)
@@ -23,7 +26,10 @@ def pusher(store,output_q,self_id,message_q):
 		img=Image.open(path/(Path(el['filename']).parts[-1]))
 		for x in output_q:
 			x.put([img.copy(),el])
-		(path/Path(el['filename']).parts[-1]).unlink()
+		img.close()
+		try:(path/Path(el['filename']).parts[-1]).unlink()
+		except:pass
+
 
 		message=[self_id,f'In cache {len(store.cache)} images.']
 		message_q.put(message)
@@ -31,8 +37,12 @@ def pusher(store,output_q,self_id,message_q):
 
 
 def run(store,settings,message_q,output_q,self_id,self_q=None):
+	if settings['autoclean']:
+		store.cache=[]
+		shutil.rmtree(path)
 	if not(path.exists()):
 		path.mkdir()
+
 	th=threading.Thread(target=pusher,args=(store,output_q,self_id,message_q))
 	th.start()
 	while True:

@@ -1,9 +1,13 @@
+import os
 from PIL import Image
 from pathlib import Path
 import tempfile
 import time
 import pickle
 import sys
+
+
+DATA_PATH=Path(os.environ['DATA_PATH'])
 
 
 
@@ -58,7 +62,7 @@ class PluginStore:
     def __init__(self,pname):
         self.__dict__['v']={}
         self.__dict__['plug_path'] = (
-            Path().home() / Path('.photomachine') / Path(f'{pname}.store')
+            DATA_PATH/ Path(f'{pname}.store')
         )
 
         if not self.__dict__['plug_path'].parent.exists():
