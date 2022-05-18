@@ -1,4 +1,5 @@
 import uuid
+import os
 import ctypes as ct
 import configparser
 import locale
@@ -249,7 +250,7 @@ class Gui:
 
         Button(misc_frame,image=icons.settings,width=1,compound='left',command=self.config_action).pack(side=LEFT,padx=5,pady=5)
         Button(misc_frame,image=icons.help,width=1,compound='left',command=self.about_plugin).pack(side=LEFT,padx=5,pady=5)        
-        Button(misc_frame,image=icons.machine,width=10,text=_('About'),compound='left').pack(side=LEFT,padx=5,pady=5)   
+        Button(misc_frame,image=icons.machine,width=12,text=_('About'),compound='left',command=self.about_photomachine).pack(side=LEFT,padx=5,pady=5)   
 
         act_frame=Labelframe(self.top_frame,text=_('Run')) 
         self.start_but=Button(act_frame,text=_('Start'),image=icons.play,compound='left',width=7,command=self.startstop)
@@ -423,6 +424,33 @@ class Gui:
         #win.deiconify()
 
 
+    def about_photomachine(self):
+        win=Toplevel(self.root)
+        win.geometry('650x600')
+        scale=self.root.winfo_fpixels('1i')/72
+        win.tk.call('tk', 'scaling', scale)
+        self.center_window(win)
+
+        dark_title_bar(win)
+        win.title(_('PhotoMachine'))
+        win.tk.call('wm', 'iconphoto', win._w, PhotoImage(file='app/icons/stream.png'))
+        win.focus_force()
+
+        fr=Frame(win)
+        fr.pack(side=TOP,padx=5,pady=5,fill=BOTH,expand=True)
+        self.splash_img=PhotoImage(file='app/icons/splash.png')
+        Label(fr,image=self.splash_img).grid(row=0,column=0,columnspan=3)
+        Label(fr,text=_('Version')+': '+os.environ['VERSION']).grid(row=1,column=0,padx=5,pady=5,sticky=W)
+        Label(fr,text=_('Author')+': '+_('Igor Zalomskij'),anchor=CENTER).grid(row=1,column=1,padx=5,pady=5,sticky=W)
+        Label(fr,text=_('Loaded plugins')+': '+str(len(self.app.plugins)),anchor=E).grid(row=1,column=2,padx=5,pady=5,sticky=W)
+
+        Button(fr,text=_('Official site'),image=icons.machine,compound=TOP,command=lambda:webbrowser.open('https://photo-machine.ru')).grid(row=2,column=0,padx=5,pady=15,sticky=EW)     
+        Button(fr,text=_('VK Group'),image=icons.vk,compound=TOP,command=lambda:webbrowser.open('https://vk.com/machine_app')).grid(row=2,column=1,padx=5,pady=15,sticky=EW)  
+        Button(fr,text=_('Donate project!'),image=icons.donate,compound=TOP,command=lambda:webbrowser.open('https://photo-machine.ru/donate')).grid(row=2,column=2,padx=5,pady=15,sticky=EW) 
+
+        Button(win,text=_('Ok'),image=icons.done,compound='left',command=lambda:win.destroy()).pack(side=BOTTOM,padx=5,pady=5,fill=X)
+        #h=HTMLScrolledText(win,html='')
+        #h.pack(side=TOP,padx=5,pady=5,fill=BOTH,expand=True)       
 
     def about_plugin(self,plug=None):
         p = Path(plug.path) if plug else Path('app')
