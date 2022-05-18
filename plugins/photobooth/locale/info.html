@@ -1,15 +1,45 @@
-<p>Привет!</p>
+<h2>PhotoBooth plugin</h2>
+This plugin allows you to implement a photo booth with a user interface. For the plugin to work, you need the digiCam control program installed (<a href="https://sourceforge.net/projects/digicamcontrol /">download</a>) and a compatible camera connected to the computer.
+<p>
+The plugin works as follows:
+<ol>
+<li>Launch the digicam control program and connect the camera.</li>
+<li>All camera settings can be made in the digicam control program</li>
+<li>Configure the plugin and run</li>
+<li>A window with the user interface will appear (it can be customized)</li>
+<li>The user clicks on the "start" button and sees himself on the screen. After a while (set in the settings), the camera takes a picture.</li>
+<li>For one session, you can take either one snapshot or more (set in the settings)</li>
+<li>If confirmation is enabled, then before sending the photo further, the photo booth asks whether to leave this photo or delete it.</li>
+</ol>
+</p>
+<p>
+<strong>Usage example: </strong>Photo booth will take several photos, create a collage from them, put it in a photo frame and if the user has confirmed what he likes, send it to print.
+<p>
+<img src="plugins/photobooth/locale/example.jpg" />
+</p>
+</p>
 
-<p>Это плагин умеет многое, а самое главное вот оно что:</p>
+<p>
+<strong style="color:red;">ATTENTION!!! </strong> The digicam control program must have the built-in server enabled! (File - Settings - WebServer)
+<p>
+<img src="plugins/photobooth/locale/digicam.jpg" />
+</p>
+</p>
 
+<p>
+<h3>Settings:</h3>
 <ul>
-	<li>Раз&nbsp;</li>
-	<li>Два</li>
-	<li>Три</li>
+<li>On full screen - enable the interface window to appear on full screen.</li>
+<li>Use the built-in theme or an external one (specify the folder with the theme). The photo booth can be used as a built-in interface theme, as well as an external one (see below)</li>
+<li>The URL of the digicam control server. Leave it by default if you have not changed the server settings in digicam control</li>
+<li>Number of photos in a series - how many photos will be taken for one user. By default, one, but you can put more to make a collage, for example.</li>
+<li>Preview time. How many people will see the preview until the photo is taken.</li>
+<li>Enable user confirmation. If enabled, the photo booth will show what happened and wait for the user to confirm the photo. To do this, put the "photo booth confirmation" plugin in the right place (after all edits, but before printing or saving). If not enabled, but the "photo booth confirmation" plugin is not needed.</li>
 </ul>
+</p>
 
-<h2>Вот так</h2>
-
-<blockquote>
-<p>И вот это цитата.</p>
-</blockquote>
+<p>
+<h3>Interface customization</h3>
+You can customize the photo booth interface. For example, put your logo, etc. This is very easy to do.<br>
+Take samples in the program folder (in program files or another place where the program is installed). The plugins/photobooth/theme folder contains the images on the basis of which the interface is built. Change them to your liking, keeping the size, expansion and transparency in the right places. Save it to a convenient location and specify this folder as an external theme in the plugin settings.
+</p>

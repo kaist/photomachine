@@ -2,13 +2,10 @@ import sys,os
 sys.dont_write_bytecode=True
 from pathlib import Path
 
-VERSION='1.05'
+VERSION='1.16'
 PORTABLE=False
 DATA_PATH=Path('data') if PORTABLE else Path().home()/Path('.photomachine')
-
-
 os.environ['DATA_PATH']=str(DATA_PATH)
-
 if hasattr(sys,"frozen"):
     os.chdir(os.path.dirname(sys.executable))
     p=DATA_PATH/Path('error.txt')

@@ -12,7 +12,6 @@ import threading
 import ctypes as ct
 import requests
 import threading
-import lxml.html
 
 
 root=Tk()
@@ -204,12 +203,12 @@ class Gui:
         ret=[]
         while True:
             r = requests.get(f'{self.digicam_url}/slide.html')
-            try:tree = lxml.html.fromstring(r.text)
-            except:continue
-            try:res=tree.xpath('//figcaption[@itemprop="caption description"]')
-            except:continue
-            for x in res:
-                cur=x.text.strip()
+            res=[]
+            for x in r.text.split('"caption description">')[1:]:
+                o=x.split(' <br> </figcaption>')[0]
+                print(o)
+                sys.stdout.flush()
+                cur=o.strip()
                 if cur not in self.digicam_list:
                     ret.append(cur)
                     self.digicam_list.append(cur)

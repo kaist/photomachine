@@ -441,6 +441,8 @@ class Gui:
                 html=_('This plugin has no help')
         win=Toplevel(self.root)
         win.geometry('900x600')
+        scale=self.root.winfo_fpixels('1i')/72
+        win.tk.call('tk', 'scaling', scale)
         self.center_window(win)
 
         dark_title_bar(win)
@@ -588,7 +590,7 @@ class Gui:
         self.main_canvas.create_image(
             win.x - dx1,
             win.y - dy1,
-            image=icons.drag,
+            image=icons.drag if self.app.settings['vertical_nodes'] else icons.drag_h,
             tags=(act.id, f'{str(act.id)}-move', 'movetag'),
             anchor=CENTER,
         )
