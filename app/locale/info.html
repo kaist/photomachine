@@ -1,0 +1,67 @@
+<h2 id="start">PhotoMachine</h2>
+<p>
+	A PhotoMachine is a program that can automatically receive photos from different sources, manipulate them, filter, edit, do color correction, and then upload them to different places - from printing on a printer to automatic uploading to a telegram group. Usage scenarios are limited only by your imagination, because the algorithm for working with these streams of photos is not "hard-wired", but is compiled by you using a convenient node system. The program is created by a photographer who often uses it himself in his work.
+</p>
+<p>
+	<h3>Working with plugins.</h3>
+	Plugins are the most important thing in a PhotoMachine. Each plugin does its own action, has its own settings and allows you to connect with other plugins. There are 3 types of plugins:
+<ul>
+		<li>"Input" - these plugins receive photos from different sources. These can be both files on disk and photos directly from the camera (yes, you can make your own photo booth) or from the Internet. Such plug-ins only have an outlet where the photos arrive.</li>
+		<li>"Actions" are plugins that do something with photos and pass them down the chain. Or they may not transmit all the photos if they are filter plugins.</li>
+		<li>"Output" - photos are just coming to these plugins. And what happens next depends on the plugin itself. This can be either a simple saving to disk, or uploading a photo to your website.</li>
+	</ul>
+	All plugins are located at the bottom. Just click "add" on the desired plugin and it will be added to the window of working with the current project. Plugins can be arbitrarily dragged to a convenient location, as well as connect chains to each other. A simple example that will take photos from the specified folder, reduce them in size and save them to disk in another location:
+<p>
+		<img src="app/locale/example1.png" /><br>
+		<i>Not very impressive yet, right?</i>
+	</p>
+	All plugins can have more than one connection. That is, for example, if you need to save photos to two sources, or process photos from different sources, you can simply connect them in the sequence you need. 
+	<p>
+		<img src="app/locale/example2.png" /><br>
+		<strong>Here it is more complicated: </strong> Photos are taken from two sources (from the ezShare WiFi card and from the telegram group), settings and LUT are applied to all photos. Next, one stream of photos goes to a plugin that adds a photo frame and prints, another stream of photos goes to a plugin with a watermark and the photos are sent to the VK album. In addition, the sources of photos from two sources are saved to disk. Does it seem to you that this is not a real scenario? Well, for me personally, this is a common thing when shooting a reportage ;)
+</p>
+
+	<p>
+		Almost all plugins have their own settings. And these settings can be unique for each instance of the plugin in the project. For example, you can do:
+	    <p>
+		<img src="app/locale/example3.png" /><br>
+		<i>Photos from the same source. A watermark is applied to one "stream", and they are sent to one telegram group, the other "stream" goes to another telegram group.</i>
+	    </p>
+	    The settings of each plugin are saved together with the project. But with each new addition of the plugin to the project, it will have to be configured anew. If you have frequently used settings, you can add an already configured plugin to your favorites, where it will be saved with all your settings.		
+	</p>
+
+	<p>
+		It is also possible to independently work with photo streams within a single running program. After all, each plugin works independently of each other, only sending photos along the chain, which may not overlap.
+	    <p>
+		<img src="app/locale/example4.png" /><br>
+		<i>Just like that, we launched a photo booth in one program and automatically sent selected photos directly from the camera to the VK group and to the built-in web server, which will show a beautiful slideshow.</i>
+	    </p>		
+	</p>
+	<p>
+		Each plugin has a short help section where you can find out what it does and how to configure it. 
+	</p>
+
+
+</p>
+
+<p>
+	<h3>Working with the project.</h3>
+	Added, connected and configured plugins, this is already a project. The project can be saved, opened, closed, and most importantly, run. When starting the project, it checks whether all plugins are configured. Whether they are configured correctly is not checked, since only you know how to configure them correctly for your tasks ;)
+<br>
+    When the project is launched, it is no longer possible to change any settings - it remains only to stop, configure and restart. By the way, if you stop the project, no plugin will work at the moment, which is generally logical.
+    <p>
+    	The more plugins are running in the project, the more RAM the program eats. In addition, each plugin has a buffer for incoming photos. The larger it is, the more RAM the program eats. If you don't like it, you can reduce the buffer size in the settings. 
+    </p>
+
+
+</p>
+
+<p>
+	<h3>Useful tips</h3>
+	<ul>
+		<li>In addition to jpg files, the "from folder" plugin can work with some types of RAW files, for example cr2 (canon). This feature turned out to be accidental. But at the same time, the photos are turned upside down horizontally, which is treated by the "rotate/display" plugin.</li>
+		<li>If you need to filter a lot of photos (for example, work only with those that have a certain rating), enable "do not upload photos, only metadata" in the settings. After that, filter with the plugin and add the "download source" plugin. At the same time, the work will be ten times faster, because the program will not have to upload every photo.</li>
+		<li>If photo processing takes a decent amount of time (for example, photoshop actions or uploading to the Internet later), then the login plugins will wait until the queue is free. There are situations when this is bad, for example, photos come from a flash drive that needs to be returned to the photographer as soon as possible. To do this, use the "cache" plugin. Then all the photos will be recorded in the cache, and you can safely pull out the flash drive.</li>
+		<li>On the site <a href="https://photo-machine.ru ">PhotoMachine</a> contains other tips and examples of using the program.</li>
+	</ul>
+</p>
