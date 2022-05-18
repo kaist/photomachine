@@ -927,7 +927,7 @@ class Gui:
 
     def save_as_state(self):
         if d := filedialog.asksaveasfilename(
-            defaultextension=".tube", filetypes=[("PhotoMachine files", ".tube")]
+            defaultextension=".nodes", filetypes=[("PhotoMachine files", ".nodes")]
         ):
             self.app.save_state(filename=d)
     def new_state(self):
@@ -940,7 +940,7 @@ class Gui:
     def load_state(self):
         if self.app.is_start:return
         if d := filedialog.askopenfilename(
-            defaultextension=".tube", filetypes=[("PhotoMachine files", ".tube")]
+            defaultextension=".nodes", filetypes=[("PhotoMachine files", ".nodes")]
         ):
             self.app.load_state(d)
 
