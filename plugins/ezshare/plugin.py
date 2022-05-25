@@ -8,8 +8,18 @@ import subprocess
 import locale
 import sys
 import ctypes
-
+import os
 is_windows=sys.platform.startswith('win')
+
+
+try:
+    from subprocess import DEVNULL
+except ImportError:
+    DEVNULL = os.open(os.devnull, os.O_RDWR)
+
+startupinfo = subprocess.STARTUPINFO()
+startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
 
 class Plugin:
     def __init__(self):
@@ -24,7 +34,7 @@ class Plugin:
         self.store=PluginStore(Path(plug.path).parts[-1])
         enc=locale.getpreferredencoding()
         if is_windows:
-            data = subprocess.check_output(['netsh', 'wlan', 'show', 'profiles']).decode(enc).split('\n')
+            data = subprocess.check_output(['netsh', 'wlan', 'show', 'profiles'], stdin=DEVNULL, stderr=DEVNULL,startupinfo=startupinfo).decode(enc).split('\n')
             aps = [
                 x.split(' : ')[1].replace('\n', '').replace('\r', '')
                 for x in data

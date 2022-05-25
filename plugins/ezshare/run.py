@@ -10,6 +10,14 @@ import locale
 import subprocess
 enc=locale.getpreferredencoding()
 
+try:
+    from subprocess import DEVNULL
+except ImportError:
+    DEVNULL = os.open(os.devnull, os.O_RDWR)
+
+
+startupinfo = subprocess.STARTUPINFO()
+startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
 def all_files():
     lst=[]
@@ -45,12 +53,12 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
         is_ok=True
         if settings['connect']:
             cur_ap=''
-            cur=subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces']).decode(enc,errors='ignore').split('\n')
+            cur=subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces'],stdin=DEVNULL, stderr=DEVNULL,startupinfo=startupinfo).decode(enc,errors='ignore').split('\n')
             for x in cur:
                 if ' SSID: ' in x:
                     cur_ap=x.split(': ')[1].split('\n')[0]
             if cur_ap.strip()!=settings['ap'].strip():
-                try:data = subprocess.check_output(['netsh', 'wlan', 'connect', f'name={settings["ap"]}'])
+                try:data = subprocess.check_output(['netsh', 'wlan', 'connect', f'name={settings["ap"]}'], stdin=DEVNULL, stderr=DEVNULL,startupinfo=startupinfo)
                 except:
                     is_ok=False
                     message=[self_id,'EzShare is not available']
@@ -103,7 +111,7 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
             message=[self_id,'EzShare is not available']
         message_q.put(message)
         if settings['disconnect']:
-            try:data = subprocess.check_output(['netsh', 'wlan', 'connect', f'name={settings["dis_ap"]}'])
+            try:data = subprocess.check_output(['netsh', 'wlan', 'connect', f'name={settings["dis_ap"]}'], stdin=DEVNULL, stderr=DEVNULL,startupinfo=startupinfo)
             except:pass
 
 
