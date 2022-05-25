@@ -71,6 +71,7 @@ class Gui:
         if event:
             fls=self.root.splitlist(event.data)
         filelist=[]
+        print(fls)
         for f in fls:
             p=Path(f)
             if p.is_dir():
@@ -136,7 +137,8 @@ def run_in(settings,store,message_q,self_id,output_q):
             except:continue
 
 
-            try:t=img.getexif()
+            try:
+                t=img.getexif()
             except:t={}
             exif = {e: t[e] for e in t}
             for o in output_q:

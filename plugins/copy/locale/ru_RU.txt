@@ -1,0 +1,3 @@
+[LANG]
+Copies=Копии
+Number of copies=Количество копий
