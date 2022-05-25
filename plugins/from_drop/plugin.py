@@ -6,7 +6,7 @@ class Plugin:
         self.category='input'
         self.name=_('Drop Window')
         self.need_config=True
-        self.default_config={'matadata':False,'remember':False,'autoclean':True,'delete':False}
+        self.default_config={'metadata':False,'remember':False,'autoclean':True,'delete':False}
 
 
     def start_config(self,frame,plug):
