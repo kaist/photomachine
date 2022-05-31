@@ -10,7 +10,7 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceRoot}/photomachine.pyw",
-            "args": ["D:\\test.tube"],
+            "args": ["D:\\test.nodes"],
             "console": "integratedTerminal",
             "justMyCode": true
         }

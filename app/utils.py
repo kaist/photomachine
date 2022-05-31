@@ -5,9 +5,81 @@ import tempfile
 import time
 import pickle
 import sys
-
+import io
+import struct
 
 DATA_PATH=Path(os.environ['DATA_PATH'])
+
+
+
+def image_open(path=None,fp=None,just_metadata=False):
+    if path.suffix=='.pmi':
+        fp=open(path,'rb')
+        return from_pm(fp)
+
+    if fp:
+        img=Image.open(fp)
+    else:
+        img=Image.open(path)
+    try:xmp=img.getxmp()
+    except:xmp={}
+    try:filename=img.filename
+    except:
+        filename=path
+    try:
+        icc_profile =img.info.get('icc_profile')
+    except:
+        icc_profile=None
+    try:t=img.getexif()
+    except:t={}
+    if just_metadata:
+        img=Image.new('RGB',(1,1))
+        loaded=False
+    else:        
+        img.load()
+        loaded=True        
+
+    exif = {e: t[e] for e in t}
+    vars={'filename':filename,'exif':exif,'profile':icc_profile,'loaded':loaded,'xmp':xmp}
+    return img,vars
+
+def to_pm(image,vars):
+    img_fp=io.BytesIO()
+    image.save(img_fp,format='jpeg',quality=90,exif=image.getexif(),icc_profile=vars.get('profile',None))
+    img_len=img_fp.getbuffer().nbytes
+    img_fp.seek(0)
+
+    data_fp=io.BytesIO()
+    pickle.dump(vars, data_fp, pickle.HIGHEST_PROTOCOL)
+    data_len=data_fp.getbuffer().nbytes
+    data_fp.seek(0)
+
+    main_fp=io.BytesIO()
+    main_fp.write(struct.pack('ll',img_len,data_len))
+    main_fp.write(img_fp.read())
+    main_fp.write(data_fp.read())
+    main_fp.seek(0)
+    return main_fp
+
+def from_pm(fp):
+    fp.seek(0)
+    img_len,data_len=struct.unpack('ll',fp.read(8))
+
+    img_io=io.BytesIO()
+    img_io.write(fp.read(img_len))
+    img_io.seek(0)
+
+    data_io=io.BytesIO()
+    data_io.write(fp.read(data_len))
+    data_io.seek(0)
+
+    image=Image.open(img_io)
+    vars=pickle.load(data_io)
+    return image,vars
+
+
+
+
 
 
 

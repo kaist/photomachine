@@ -36,9 +36,9 @@ async def start_socket(settings,message_q,output_q,self_id):
         sys.stdout.flush()
         r=requests.get(message['url'], stream=True)
         r.raw.decode_content = True
-        img=Image.open(r.raw)
-        t=img.getexif()
-        exif = {e: t[e] for e in t}
+        try:img,vars=image_open(path=message['filename'],fp=r.raw,just_metadata=False)
+        except:continue
+        vars['count']=count
         for o in output_q:
             o.put([img.copy(),{'filename':message['filename'],'exif':exif}])
 

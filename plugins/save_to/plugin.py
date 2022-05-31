@@ -22,7 +22,7 @@ class Plugin:
 
         Label(frame,text=_('Format')).grid(row=1,column=0,padx=5,pady=5,sticky=E)
         self.format_var=StringVar()
-        formats=['jpg','png','tiff','bmp','gif','pdf']
+        formats=['jpg','png','tiff','bmp','gif','pdf','pmi (internal)']
         self.format_var.set(plug.settings.get('format','jpg'))
         self.format_combo=Combobox(frame,textvariable=self.format_var,state="readonly",width=10)
         self.format_combo.grid(row=1,column=1,columnspan=1,padx=5,pady=5,sticky=W)

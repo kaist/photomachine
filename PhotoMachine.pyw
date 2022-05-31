@@ -1,7 +1,6 @@
 import sys,os
 sys.dont_write_bytecode=True
 from pathlib import Path
-
 VERSION='1.17'
 PORTABLE=False
 DATA_PATH=Path('data') if PORTABLE else Path().home()/Path('.photomachine')
@@ -43,10 +42,10 @@ def start_plug(path,settings,message_q,output_q,self_id,self_q=None):
 class App:
     def __init__(self,gui,open_file,startup_start):
         p=DATA_PATH/Path('main_settings.json')
-        self.settings={'max_q':10,
+        self.settings={'max_q':5,
                         'check_updates':True,
                         'send_errors':True,
-                        'vertical_nodes':False}
+                        'vertical_nodes':True}
         if p.exists():
             with open(p,'rb') as f:
                 try:self.settings=json.load(f)
@@ -278,7 +277,7 @@ class App:
         self.plug_q={}
         self.all_process=[]
         for plug in self.plug_actions:
-                q=self.manager.Queue(maxsize=5)
+                q=self.manager.Queue(maxsize=self.settings['max_q'])
                 self.plug_q[plug.id]=q
 
         for work in self.plug_actions:
@@ -359,14 +358,12 @@ if __name__=='__main__':
     startup_start=False
     if len(sys.argv)>1:
         open_file=sys.argv[1]
-        if '--start' in sys.argv:
+        if '--start' in sys.argv or '-s' in sys.argv:
             startup_start=True
 
     import threading
     import json
     import time
-    import sys 
-    import os 
     import psutil
     import pickle
     from tkinter import Tk

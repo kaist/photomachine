@@ -115,34 +115,10 @@ def run_in(settings,store,message_q,self_id,output_q):
 
 
 
-            try:
-                try:img=PIL.Image.open(fl)
-                except:
-                    continue
-
-                try:xmp=img.getxmp()
-                except:xmp={}
-                filename=img.filename
-
-                try:
-                    icc_profile =img.info.get('icc_profile')
-                except:
-                    icc_profile=None
-                if settings['metadata']:
-                    img=PIL.Image.new('RGB',(1,1))
-                    loaded=False
-                else:        
-                    img.load()
-                    loaded=True        
+            try:img,vars=image_open(path=x,just_metadata=settings['metadata'])
             except:continue
-
-
-            try:
-                t=img.getexif()
-            except:t={}
-            exif = {e: t[e] for e in t}
+            vars['count']=count
             for o in output_q:
-                vars={'filename':filename,'count':count,'exif':exif,'profile':icc_profile,'loaded':loaded,'xmp':xmp}
                 message=[self_id,'Load file {0} \n(count: {1})'.format(fl.name,count)]
                 message_q.put(message)
                 o.put([img.copy(),vars])

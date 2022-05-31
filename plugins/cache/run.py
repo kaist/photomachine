@@ -23,11 +23,10 @@ def pusher(store,output_q,self_id,message_q):
             time.sleep(0.01)
             continue
         store.cache=tarr
-        img=Image.open(path/(Path(el['filename']).parts[-1]))
+        image,vars=from_pm(open((path/(Path(el).parts[-1])).with_suffix('.phi'),'rb'))
         for x in output_q:
-            x.put([img.copy(),el])
-        img.close()
-        try:(path/Path(el['filename']).parts[-1]).unlink()
+            x.put([image.copy(),vars])
+        try:((path/(Path(el).parts[-1])).with_suffix('.phi')).unlink()
         except:pass
 
 
@@ -49,9 +48,12 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
         if not self_q.empty():
             image,vars=self_q.get()
             self_q.task_done()
-            image.save(path/(Path(vars['filename']).parts[-1]),quality=100)
+            fp=to_pm(image,vars)
+            with open((path/Path(vars['filename']).parts[-1]).with_suffix('.phi'),'wb') as f:
+                f.write(fp.read())
+            #image.save(path/(Path(vars['filename']).parts[-1]),quality=100)
             d=store.cache
-            d.append(vars)
+            d.append(path/(Path(vars['filename']).parts[-1]))
             store.cache=d
 
 
