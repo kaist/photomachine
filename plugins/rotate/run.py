@@ -1,5 +1,5 @@
 from pathlib import Path
-from PIL import Image
+from PIL import Image,ImageOps
 import time
 import os
 import sys
@@ -10,6 +10,8 @@ from PIL import Image
 
 @run_thread
 def run(store,settings,image,vars):
+    if settings['exif_rotate']:
+        image=ImageOps.exif_transpose(image)
     if settings['flip_h']:
         image=image.transpose(Image.FLIP_LEFT_RIGHT)
     if settings['flip_v']:

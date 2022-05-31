@@ -8,3 +8,4 @@ Horizontal only=Только горизонтальные
 -90° (counterclockwise)=-90° (против часовой стрелки)
 Flip horizontally=Отобразить по горизонтали
 Flip vertically=Отобразить по вертикали
+Rotate from EXIF=Поворот из EXIF
