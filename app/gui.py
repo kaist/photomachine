@@ -420,37 +420,20 @@ class Gui:
 
         self.f_plugs_list.config(width=len(t_plugs)*250,height=65,scrollregion=(0,0,len(t_plugs)*250,100))
         for n,p in enumerate(t_plugs):
-
-
-            # plugin,sets=dt
-            # self.frame=Frame(width=240,height=100,relief=SOLID)
-            # self.frame.config()
-            # self.icon=Label(self.frame,image=plugin.icon)
-            # self.icon.grid(row=0,column=0,rowspan=2,padx=5,pady=5)
-            # Label(self.frame,text=sets[2],image=icons.__getattr__(plugin.category),compound='left').grid(row=0,sticky=W,column=1,columnspan=2,padx=5,pady=3)
-            # self.b_fr=Frame(self.frame)
-            # self.b_fr.grid(row=1,column=1,sticky=EW)
-            # self.button=Button(self.b_fr,text=_('Add'),width=8,image=icons.add,command=lambda: gui.add_plugin(plugin,sets=sets),compound='left')
-            # self.button.pack(side=LEFT,padx=5,pady=3)
-
-            # self.delete_button=Button(self.b_fr,width=0,image=icons.trash_action,command=lambda: gui.remove_favorite(sets),compound='left')
-            # self.delete_button.pack(side=RIGHT,padx=5,pady=3)
             plug,sets=p
 
 
-            #w=FavoriteWidget(self,plug)
-            #self.f_plugs_list.create_window(n*250,0,window=w.frame,width=240,height=65,anchor=NW)
 
-            self.f_plugs_list.create_rectangle(n*250+2,2,n*250+240,65,outline='black')
+            self.round_rectangle(self.f_plugs_list,n*250+2,2,n*250+240,65,fill='#454545',outline='#585858')
             self.f_plugs_list.create_image(n*250+7,16,image=plug.icon,anchor=NW)
             self.f_plugs_list.create_text(n*250+7+60,7,text=sets[2],anchor=NW,fill='white',font=fnt)
             self.f_plugs_list.create_image(n*250+7+40,7,image=icons.__getattr__(plug.category),anchor=NW)  
 
-            self.f_plugs_list.create_rectangle(n*250+7+40,30,n*250+7+40+100,30+30,width=0,fill='#585858',tags=(f'addbind{n}','hl'))
+            self.round_rectangle(self.f_plugs_list,n*250+7+40,30,n*250+7+40+100,30+30,radius=5,width=0,fill='#585858',tags=(f'addbind{n}','hl'))
             self.f_plugs_list.create_image(n*250+7+44+5,37,image=icons.add,anchor=NW,tag=f'addbind{n}') 
             self.f_plugs_list.create_text(n*250+7+65+5,37,text=_('Add'),anchor=NW,fill='white',font=fnt,tag=f'addbind{n}')
 
-            self.f_plugs_list.create_rectangle(n*250+7+150,30,n*250+7+150+35,30+30,width=0,fill='#585858',tags=(f'infobind{n}','hl'))
+            self.round_rectangle(self.f_plugs_list,n*250+7+150,30,n*250+7+150+35,30+30,radius=5,width=0,fill='#585858',tags=(f'infobind{n}','hl'))
             self.f_plugs_list.create_image(n*250+7+160,37,image=icons.trash_action,anchor=NW,tags=f'infobind{n}') 
 
             self.f_plugs_list.tag_bind(f'infobind{n}','<Button-1>',lambda event, s=sets : self.remove_favorite(s))
@@ -492,16 +475,16 @@ class Gui:
 
         self.plugs_list.config(width=len(t_plugs)*250,height=65,scrollregion=(0,0,len(t_plugs)*250,100))
         for n,plug in enumerate(t_plugs):
-            self.plugs_list.create_rectangle(n*250+2,2,n*250+240,65,outline='black')
+            self.round_rectangle(self.plugs_list,n*250+2,2,n*250+240,65,fill='#454545',outline='#585858')
             self.plugs_list.create_image(n*250+7,16,image=plug.icon,anchor=NW)
             self.plugs_list.create_text(n*250+7+60,7,text=plug.name,anchor=NW,fill='white',font=fnt)
             self.plugs_list.create_image(n*250+7+40,7,image=icons.__getattr__(plug.category),anchor=NW)  
 
-            self.plugs_list.create_rectangle(n*250+7+40,30,n*250+7+40+100,30+30,width=0,fill='#585858',tags=(f'addbind{n}','hl'))
+            self.round_rectangle(self.plugs_list,n*250+7+40,30,n*250+7+40+100,30+30,radius=5,width=0,fill='#585858',tags=(f'addbind{n}','hl'))
             self.plugs_list.create_image(n*250+7+44+5,37,image=icons.add,anchor=NW,tag=f'addbind{n}') 
             self.plugs_list.create_text(n*250+7+65+5,37,text=_('Add'),anchor=NW,fill='white',font=fnt,tag=f'addbind{n}')
 
-            self.plugs_list.create_rectangle(n*250+7+150,30,n*250+7+150+35,30+30,width=0,fill='#585858',tags=(f'infobind{n}','hl'))
+            self.round_rectangle(self.plugs_list,n*250+7+150,30,n*250+7+150+35,30+30,radius=5,width=0,fill='#585858',tags=(f'infobind{n}','hl'))
             self.plugs_list.create_image(n*250+7+160,37,image=icons.info,anchor=NW,tags=f'infobind{n}') 
 
             self.plugs_list.tag_bind(f'infobind{n}','<Button-1>',lambda event, p=plug : self.about_plugin(p))
@@ -539,7 +522,30 @@ class Gui:
         self.update_lines()
         
 
+    def round_rectangle(self,canv,x1, y1, x2, y2, radius=25, **kwargs):
+            
+        points = [x1+radius, y1,
+                  x1+radius, y1,
+                  x2-radius, y1,
+                  x2-radius, y1,
+                  x2, y1,
+                  x2, y1+radius,
+                  x2, y1+radius,
+                  x2, y2-radius,
+                  x2, y2-radius,
+                  x2, y2,
+                  x2-radius, y2,
+                  x2-radius, y2,
+                  x1+radius, y2,
+                  x1+radius, y2,
+                  x1, y2,
+                  x1, y2-radius,
+                  x1, y2-radius,
+                  x1, y1+radius,
+                  x1, y1+radius,
+                  x1, y1]
 
+        canv.create_polygon(points, **kwargs, smooth=True)
 
     def add_plugin(self,plugin,new=True,sets=False):
         label = Label(self.root, text="")
@@ -621,7 +627,7 @@ class Gui:
 
 
 
-        self.main_canvas.create_rectangle(act.x-125,act.y-33,act.x+125,act.y+33,outline='black',fill='#313131',tags=(act.id,f'{act.id}-wintag',f'{act.id}-main',f'{str(act.id)}-move', 'movetag'))
+        self.round_rectangle(self.main_canvas,act.x-125,act.y-33,act.x+125,act.y+33,outline='#585858',fill='#313131',tags=(act.id,f'{act.id}-wintag',f'{act.id}-main',f'{str(act.id)}-move', 'movetag'))
         self.main_canvas.create_image(act.x-125+7,act.y-33+16,image=act.plugin.icon,anchor=NW,tags=(act.id,f'{str(act.id)}-move', 'movetag'))
 
         self.main_canvas.create_text(act.x-125+7+60,act.y-33+7,text=act.name[:22],width=150,anchor=NW,fill='white',font=fnt,tags=(act.id,))
@@ -634,19 +640,19 @@ class Gui:
         self.main_canvas.create_text(act.x-125+7+40,act.y-33+30,text='',anchor=NW,fill='white',font=fnt,tags=(act.id,f'{act.id}-text'))
 
         if act.plugin.need_config:
-            self.main_canvas.create_rectangle(act.x-125+7+40,act.y-33+30,act.x-125+7+40+100,act.y-33+30+30,width=0,fill='#585858',tags=(act.id,f'setsbind{act.id}','btn','need-del','hl'))
+            self.round_rectangle(self.main_canvas,act.x-125+7+40,act.y-33+30,act.x-125+7+40+100,act.y-33+30+30,radius=5,width=0,fill='#585858',tags=(act.id,f'setsbind{act.id}','btn','need-del','hl'))
             self.main_canvas.create_image(act.x-125+7+44+5,act.y-33+37,image=icons.config_action,anchor=NW,tags=(act.id,f'setsbind{act.id}','btn','need-del'))
             self.main_canvas.create_text(act.x-125+7+65+5,act.y-33+37,text=_('Config'),anchor=NW,fill='white',font=fnt,tags=(act.id,f'setsbind{act.id}','btn','need-del'))
         else:
-            self.main_canvas.create_rectangle(act.x-125+7+40,act.y-33+30,act.x-125+7+40+100,act.y-33+30+30,width=0,fill='#585858',stipple='gray25',tags=(act.id,'need-del'))
+            self.round_rectangle(self.main_canvas,act.x-125+7+40,act.y-33+30,act.x-125+7+40+100,act.y-33+30+30,radius=5,width=0,fill='#585858',stipple='gray25',tags=(act.id,'need-del'))
             self.main_canvas.create_image(act.x-125+7+44+5,act.y-33+37,image=icons.config_action,anchor=NW,tags=(act.id,'need-del'))
             self.main_canvas.create_text(act.x-125+7+65+5,act.y-33+37,text=_('Config'),anchor=NW,fill='white',font=fnt,tags=(act.id,'need-del'))           
 
 
-        self.main_canvas.create_rectangle(act.x-125+7+150,act.y-33+30,act.x-125+7+150+35,act.y-33+30+30,width=0,fill='#585858',tags=(act.id,f'favbind{act.id}','btn','need-del','hl'))
+        self.round_rectangle(self.main_canvas,act.x-125+7+150,act.y-33+30,act.x-125+7+150+35,act.y-33+30+30,width=0,radius=5,fill='#585858',tags=(act.id,f'favbind{act.id}','btn','need-del','hl'))
         self.main_canvas.create_image(act.x-125+7+160,act.y-33+37,image=icons.favorite,anchor=NW,tags=(act.id,f'favbind{act.id}','btn','need-del'))
 
-        self.main_canvas.create_rectangle(act.x-125+7+195,act.y-33+30,act.x-125+7+195+35,act.y-33+30+30,width=0,fill='#585858',tags=(act.id,f'delbind{act.id}','btn','need-del','hl'))
+        self.round_rectangle(self.main_canvas,act.x-125+7+195,act.y-33+30,act.x-125+7+195+35,act.y-33+30+30,radius=5,width=0,fill='#585858',tags=(act.id,f'delbind{act.id}','btn','need-del','hl'))
         self.main_canvas.create_image(act.x-125+7+205,act.y-33+37,image=icons.trash_action,anchor=NW,tags=(act.id,f'delbind{act.id}','btn','need-del'))        
 
         self.main_canvas.tag_bind(f'setsbind{act.id}','<Button-1>',lambda event, pid=act.id : self.config_action(pid))
@@ -809,16 +815,15 @@ class Gui:
             for plug_to in plug.outputs:
                 from_dot=self.main_canvas.coords(f'{from_uid}-main')
                 if self.app.settings['vertical_nodes']:
-                    print(from_dot)
-                    from_dot=from_dot[0]+125,from_dot[1]+65
+                    from_dot=from_dot[0]+100,from_dot[1]+65
                 else:
-                    from_dot=from_dot[0]+250,from_dot[1]+65/2                   
+                    from_dot=from_dot[0]+250-25,from_dot[1]+65/2                
 
                 to_dot=self.main_canvas.coords(f'{plug_to}-main')
                 if self.app.settings['vertical_nodes']:                
-                    to_dot=to_dot[0]+125,to_dot[1]
+                    to_dot=to_dot[0]+100,to_dot[1]
                 else:
-                    to_dot=to_dot[0],to_dot[1]+65/2
+                    to_dot=to_dot[0]-25,to_dot[1]+65/2
                 if self.app.settings['vertical_nodes']:
                     dx,dy=0,8
                 else:
