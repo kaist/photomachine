@@ -13,6 +13,7 @@ from tkinter import messagebox
 from tkhtmlview import HTMLScrolledText
 import webbrowser
 from tkinter.font import Font
+from math import comb
 
 
 
@@ -272,16 +273,20 @@ class Gui:
 
 
     def canvas_scroll(self,event):
-        self.main_canvas.yview("scroll",-event.delta,"units")
+        if self.app.settings['vertical_nodes']:
+            self.main_canvas.yview("scroll",int(-1*(event.delta/120)),"units")
+        else:
+            self.main_canvas.xview("scroll",int(-1*(event.delta/120)),"units")            
         return "break" 
 
 
     def plugs_scroll(self,event):
-        self.plugs_list.xview("scroll",-event.delta,"units")
+        print(event.delta)
+        self.plugs_list.xview("scroll",int(-1*(event.delta/120)),"units")
         return "break" 
 
     def plugs_scroll2(self,event):
-        self.f_plugs_list.xview("scroll",-event.delta,"units")
+        self.f_plugs_list.xview("scroll",int(-1*(event.delta/120)),"units")
         return "break" 
 
     def upd_canv(self,event=None):
@@ -495,23 +500,24 @@ class Gui:
             self.plugs_list.tag_bind(f'infobind{n}','<Enter>',self.curs_enter)  
             self.plugs_list.tag_bind(f'infobind{n}','<Leave>',self.curs_leave)  
 
-    def curs_enter(self,event):
-        wid=event.widget
+    def curs_enter(self,event=None):
+        try:wid=event.widget
+        except:return
         x = wid.canvasx(event.x)
         y = wid.canvasy(event.y)
-        obj=wid.find_closest(x,y)
+        obj=wid.find_closest(x,y,halo=5)
         if 'hl' in wid.gettags(obj):
             wid.itemconfigure(obj,fill='#606060')
-        self.root.config(cursor="hand2")
 
     def curs_leave(self,event):
-        wid=event.widget
+        try:wid=event.widget
+        except:return
         x = wid.canvasx(event.x)
         y = wid.canvasy(event.y)
-        obj=wid.find_closest(x,y)
+        obj=wid.find_closest(x,y,halo=5)
         if 'hl' in wid.gettags(obj):
             wid.itemconfigure(obj,fill='#585858')
-        self.root.config(cursor="arrow")
+
 
 
     def redraw_canvas(self):
@@ -637,7 +643,7 @@ class Gui:
         self.main_canvas.create_image(act.x-125+7+215,act.y-33+7,image=icons.rename,anchor=NW,tags=(act.id,'btn',f'renamebind{act.id}','need-del') ) 
 
 
-        self.main_canvas.create_text(act.x-125+7+40,act.y-33+30,text='',anchor=NW,fill='white',font=fnt,tags=(act.id,f'{act.id}-text'))
+        self.main_canvas.create_text(act.x-125+7+40,act.y-33+30,text='',anchor=NW,fill='white',font=fnt,tags=(act.id,f'{act.id}-text','text'))
 
         if act.plugin.need_config:
             self.round_rectangle(self.main_canvas,act.x-125+7+40,act.y-33+30,act.x-125+7+40+100,act.y-33+30+30,radius=5,width=0,fill='#585858',tags=(act.id,f'setsbind{act.id}','btn','need-del','hl'))
@@ -770,10 +776,12 @@ class Gui:
             #self.root.config(cursor="tcross")
 
     def move_cursor_start(self,event):
-        self.root.config(cursor="fleur")
+        pass
+        #self.root.config(cursor="fleur")
 
     def move_cursor_end(self,event):
-        self.root.config(cursor="arrow")
+        pass
+        #self.root.config(cursor="arrow")
 
     def line_cursor_start(self,event):
         self.root.config(cursor="tcross")
@@ -793,7 +801,7 @@ class Gui:
         tgs = self.main_canvas.find_withtag(f'{tag}-main')
         c=self.main_canvas.coords(tgs)
 
-        self.app.update_coords(tag,c[0]+125,c[1]+65/2)
+        self.app.update_coords(tag,c[0]+100,c[1]+33)
         self.update_lines()
 
     def move_end(self,event=None):
@@ -806,6 +814,16 @@ class Gui:
             self.upd_canv()
             return
         self.main_canvas.configure(width=max(x)+300,height=max(y)+300,scrollregion=(0,0,max(x)+300,max(y)+300))
+
+
+
+
+    def bz(self,c,n=10,t=False):
+        m,q,p,s=list(zip(*c)), len(c),[],(n-1 if t else n)/1.
+        for i in range(n):
+            b=[comb(q-1,v)*(i/s)**v*(1-(i/s))**(q-1-v)for v in range(q)]
+            p+=[(tuple(sum(j*k for j,k in zip(d,b))for d in m))]
+        return p
 
 
     def update_lines(self):
@@ -829,9 +847,29 @@ class Gui:
                 else:
                     dx,dy=8,0
 
-                self.main_canvas.create_line(from_dot[0]+dx,from_dot[1]+dy,to_dot[0]-dx,to_dot[1]-dy,tags=('lines',plug_to),width=1.5,fill='#626567')
-                middle_x=from_dot[0]+(to_dot[0]-from_dot[0])/2
-                middle_y=from_dot[1]+(to_dot[1]-from_dot[1])/2          
+                dots=[]
+                dots.append((from_dot[0]+dx,from_dot[1]+dy))
+                if self.app.settings['vertical_nodes']:
+                    dots.append(( from_dot[0]+dx,  (to_dot[1]-dy)-((to_dot[1]+dy)-(from_dot[1]-dy))/2   ))
+                    dots.append(( to_dot[0]+dx, (to_dot[1]-dy)-((to_dot[1]+dy)-(from_dot[1]-dy))/2  ) )   
+                else:
+                    dots.append((   (to_dot[0]-dx)-((to_dot[0]+dx)-(from_dot[0]-dx))/2 , from_dot[1]+dy ))
+                    dots.append((   (to_dot[0]-dx)-((to_dot[0]+dx)-(from_dot[0]-dx))/2 , to_dot[1]+dy ) )                               
+                dots.append((to_dot[0]-dx,to_dot[1]-dy))
+
+                ret=self.bz(dots,10,t=True)
+                points=[]
+                for p in ret:
+                    points.extend(p)
+                self.main_canvas.create_line(*points,smooth=True,width=1.5,fill='#626567',tags=('lines',plug_to))
+
+
+
+
+
+                #self.main_canvas.create_line(from_dot[0]+dx,from_dot[1]+dy,to_dot[0]-dx,to_dot[1]-dy,tags=('lines',plug_to),width=1.5,fill='#626567')
+                middle_x=ret[len(ret)//2][0]
+                middle_y=ret[len(ret)//2][1]
 
                 self.main_canvas.create_image(
                     middle_x,
@@ -1066,6 +1104,7 @@ class Gui:
             self.start_but['image']=icons.stop          
 
     def start(self):
+        self.main_canvas.itemconfigure('text', text=_('Waiting...'))
 
         self.main_canvas.delete('need-del')
         self.app.start()
