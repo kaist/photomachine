@@ -12,6 +12,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 from tkhtmlview import HTMLScrolledText
 import webbrowser
+from tkinter.font import Font
 
 
 
@@ -80,124 +81,17 @@ class PlugAction:
         self.settings={}
 
 
-class PlugWidget:
-    def __init__(self,gui,plugin):
-        self.frame=Frame(width=240,height=100,relief=SOLID)
-        self.frame.config()
-        self.icon=Label(self.frame,image=plugin.icon)
-        self.icon.grid(row=0,column=0,rowspan=2,padx=5,pady=5)
-        Label(self.frame,text=plugin.name,image=icons.__getattr__(plugin.category),compound='left').grid(row=0,sticky=W,column=1,columnspan=2,padx=5,pady=3)
-        self.b_fr=Frame(self.frame)
-        self.b_fr.grid(row=1,column=1,sticky=EW)
-        self.button=Button(self.b_fr,text=_('Add'),width=8,image=icons.add,command=lambda: gui.add_plugin(plugin),compound='left')
-        self.button.pack(side=LEFT,padx=5,pady=3)
-
-        self.info_button=Button(self.b_fr,width=0,image=icons.info,command=lambda: gui.about_plugin(plugin),compound='left')
-        self.info_button.pack(side=LEFT,padx=5,pady=3)
-
-
-class FavoriteWidget:
-    def __init__(self,gui,dt):
-        plugin,sets=dt
-        self.frame=Frame(width=240,height=100,relief=SOLID)
-        self.frame.config()
-        self.icon=Label(self.frame,image=plugin.icon)
-        self.icon.grid(row=0,column=0,rowspan=2,padx=5,pady=5)
-        Label(self.frame,text=sets[2],image=icons.__getattr__(plugin.category),compound='left').grid(row=0,sticky=W,column=1,columnspan=2,padx=5,pady=3)
-        self.b_fr=Frame(self.frame)
-        self.b_fr.grid(row=1,column=1,sticky=EW)
-        self.button=Button(self.b_fr,text=_('Add'),width=8,image=icons.add,command=lambda: gui.add_plugin(plugin,sets=sets),compound='left')
-        self.button.pack(side=LEFT,padx=5,pady=3)
-
-        self.delete_button=Button(self.b_fr,width=0,image=icons.trash_action,command=lambda: gui.remove_favorite(sets),compound='left')
-        self.delete_button.pack(side=RIGHT,padx=5,pady=3)
-
-class PlugInCanvas:
-    def __init__(self,gui,plugin):
-        self.plugin=plugin
-        self.gui=gui
-        self.x=plugin.x
-        self.y=plugin.y
-        self.frame=Frame(width=250,height=100,relief=SOLID)
-        self.icon=Label(self.frame,image=plugin.plugin.icon)
-        self.icon.grid(row=0,column=0,rowspan=2,padx=5,pady=5,sticky=N)
-        self.l_frame=Frame(self.frame)
-        self.l_frame.grid(row=0,column=1,columnspan=2,pady=2,sticky="nsew")
-        self.name_label=Label(self.l_frame,text=plugin.name,image=icons.__getattr__(plugin.plugin.category),compound='left',width=21,justify=LEFT)
-        self.name_label.pack(side=LEFT,padx=5,pady=2,fill=X)
-        self.e_label=Label(self.l_frame,image=icons.rename,compound='left',justify=LEFT,cursor="hand2")
-        self.e_label.pack(side=RIGHT,padx=1,pady=2)
-        self.e_label.bind("<Button-1>",self.start_rename)
-
-
-
-        self.b_frame=Frame(self.frame)
-        self.b_frame.grid(row=1,column=2,sticky=EW)
-        self.init_buts()
-
-
-    def init_buts(self):
-
-        self.button_config=Button(self.b_frame,image=icons.config_action,width=6,text=_('Config'),compound='left',command=lambda:self.gui.config_action(self.plugin.id))
-        self.button_config.pack(padx=5,pady=2,side=LEFT)
-
-        self.button_fav=Button(self.b_frame,image=icons.favorite,width=2,command=lambda:self.gui.favorite_action(self.plugin.id))
-        self.button_fav.pack(padx=5,pady=2,side=LEFT)    
-
-        self.button_delete=Button(self.b_frame,image=icons.trash_action,width=2,command=lambda:self.gui.delete_action(self.plugin.id))
-        self.button_delete.pack(padx=5,pady=2,side=LEFT)
-
-   
-
-    def start_rename(self,event=None):
-        self.e_label['image']=icons.done
-        self.e_label.unbind('<Button-1>')
-        self.name_label.forget()
-        self.button_config.forget()
-        self.button_delete.forget()
-        self.button_fav.forget()        
-        self.name_variable=StringVar()
-        self.name_variable.set(self.plugin.name)
-        self.name_entry=Entry(self.l_frame,textvariable=self.name_variable,width=21)
-        self.name_entry.pack(side=LEFT,padx=5,pady=2,fill=X)
-        self.e_label.bind('<Button-1>',self.end_rename)
-        self.name_entry.bind('<Return>',self.end_rename)
-
-    def end_rename(self,event):
-        self.e_label['image']=icons.rename
-        self.e_label.unbind('<Button-1>')
-        self.name_entry.unbind('<Return>')
-        self.e_label.bind("<Button-1>",self.start_rename)
-        self.name_entry.forget()
-        self.plugin.name=self.name_variable.get()
-
-        self.name_label=Label(self.l_frame,text=self.plugin.name,image=icons.__getattr__(self.plugin.plugin.category),compound='left',width=21,justify=LEFT)
-        self.name_label.pack(side=LEFT,padx=5,pady=2,fill=X)
-        self.init_buts()
 
 
 
 
 
-class RunInCanvas:
-    def __init__(self,plugin):
-        self.x=plugin.x
-        self.y=plugin.y
-        self.plugin=plugin
-        self.frame=Frame(width=350,height=100,relief=SOLID)
-        self.icon=Label(self.frame,image=plugin.plugin.icon)
-        self.icon.grid(row=0,column=0,rowspan=2,padx=5,pady=5,sticky=N)
 
 
-        Label(self.frame,text=plugin.name,image=icons.__getattr__(plugin.plugin.category),compound='left',justify=LEFT).grid(row=0,column=1,columnspan=2,padx=5,pady=3,sticky=EW)
 
 
-        self.state_label=Label(self.frame,text=_('Waiting...'),wraplength=180,justify=LEFT)
-        self.state_label.grid(row=1,column=1,padx=5,pady=5,sticky=EW)
 
 
-    def update_text(self,text):
-        self.state_label['text']=text
 
 
 
@@ -506,6 +400,8 @@ class Gui:
 
 
     def init_favorites_gui(self):
+        label = Label(self.root, text="")
+        fnt =Font(font=label['font'])
         filt=self.f_filt_var.get()
         self.f_plug_wingets=[]
         self.f_plug_canvas=[]
@@ -523,9 +419,49 @@ class Gui:
                     t_plugs.append((pl,x))
 
         self.f_plugs_list.config(width=len(t_plugs)*250,height=65,scrollregion=(0,0,len(t_plugs)*250,100))
-        for n,plug in enumerate(t_plugs):
-            w=FavoriteWidget(self,plug)
-            self.f_plugs_list.create_window(n*250,0,window=w.frame,width=240,height=65,anchor=NW)
+        for n,p in enumerate(t_plugs):
+
+
+            # plugin,sets=dt
+            # self.frame=Frame(width=240,height=100,relief=SOLID)
+            # self.frame.config()
+            # self.icon=Label(self.frame,image=plugin.icon)
+            # self.icon.grid(row=0,column=0,rowspan=2,padx=5,pady=5)
+            # Label(self.frame,text=sets[2],image=icons.__getattr__(plugin.category),compound='left').grid(row=0,sticky=W,column=1,columnspan=2,padx=5,pady=3)
+            # self.b_fr=Frame(self.frame)
+            # self.b_fr.grid(row=1,column=1,sticky=EW)
+            # self.button=Button(self.b_fr,text=_('Add'),width=8,image=icons.add,command=lambda: gui.add_plugin(plugin,sets=sets),compound='left')
+            # self.button.pack(side=LEFT,padx=5,pady=3)
+
+            # self.delete_button=Button(self.b_fr,width=0,image=icons.trash_action,command=lambda: gui.remove_favorite(sets),compound='left')
+            # self.delete_button.pack(side=RIGHT,padx=5,pady=3)
+            plug,sets=p
+
+
+            #w=FavoriteWidget(self,plug)
+            #self.f_plugs_list.create_window(n*250,0,window=w.frame,width=240,height=65,anchor=NW)
+
+            self.f_plugs_list.create_rectangle(n*250+2,2,n*250+240,65,outline='black')
+            self.f_plugs_list.create_image(n*250+7,16,image=plug.icon,anchor=NW)
+            self.f_plugs_list.create_text(n*250+7+60,7,text=sets[2],anchor=NW,fill='white',font=fnt)
+            self.f_plugs_list.create_image(n*250+7+40,7,image=icons.__getattr__(plug.category),anchor=NW)  
+
+            self.f_plugs_list.create_rectangle(n*250+7+40,30,n*250+7+40+100,30+30,width=0,fill='#585858',tags=(f'addbind{n}','hl'))
+            self.f_plugs_list.create_image(n*250+7+44+5,37,image=icons.add,anchor=NW,tag=f'addbind{n}') 
+            self.f_plugs_list.create_text(n*250+7+65+5,37,text=_('Add'),anchor=NW,fill='white',font=fnt,tag=f'addbind{n}')
+
+            self.f_plugs_list.create_rectangle(n*250+7+150,30,n*250+7+150+35,30+30,width=0,fill='#585858',tags=(f'infobind{n}','hl'))
+            self.f_plugs_list.create_image(n*250+7+160,37,image=icons.trash_action,anchor=NW,tags=f'infobind{n}') 
+
+            self.f_plugs_list.tag_bind(f'infobind{n}','<Button-1>',lambda event, s=sets : self.remove_favorite(s))
+
+            self.f_plugs_list.tag_bind(f'addbind{n}','<Button-1>',lambda event, p=plug,s=sets : self.add_plugin(p,sets=s))            
+            self.f_plugs_list.tag_bind(f'addbind{n}','<Enter>',self.curs_enter)  
+            self.f_plugs_list.tag_bind(f'addbind{n}','<Leave>',self.curs_leave)  
+            self.f_plugs_list.tag_bind(f'infobind{n}','<Enter>',self.curs_enter)  
+            self.f_plugs_list.tag_bind(f'infobind{n}','<Leave>',self.curs_leave)  
+
+
 
 
     def remove_favorite(self,sets):
@@ -536,6 +472,9 @@ class Gui:
 
 
     def init_plugins_gui(self,event=None):
+        label = Label(self.root, text="")
+        fnt =Font(font=label['font'])
+        
         filt=self.filt_var.get()
         self.plug_wingets=[]
         self.plug_canvas=[]
@@ -553,8 +492,44 @@ class Gui:
 
         self.plugs_list.config(width=len(t_plugs)*250,height=65,scrollregion=(0,0,len(t_plugs)*250,100))
         for n,plug in enumerate(t_plugs):
-            w=PlugWidget(self,plug)
-            self.plugs_list.create_window(n*250,0,window=w.frame,width=240,height=65,anchor=NW)
+            self.plugs_list.create_rectangle(n*250+2,2,n*250+240,65,outline='black')
+            self.plugs_list.create_image(n*250+7,16,image=plug.icon,anchor=NW)
+            self.plugs_list.create_text(n*250+7+60,7,text=plug.name,anchor=NW,fill='white',font=fnt)
+            self.plugs_list.create_image(n*250+7+40,7,image=icons.__getattr__(plug.category),anchor=NW)  
+
+            self.plugs_list.create_rectangle(n*250+7+40,30,n*250+7+40+100,30+30,width=0,fill='#585858',tags=(f'addbind{n}','hl'))
+            self.plugs_list.create_image(n*250+7+44+5,37,image=icons.add,anchor=NW,tag=f'addbind{n}') 
+            self.plugs_list.create_text(n*250+7+65+5,37,text=_('Add'),anchor=NW,fill='white',font=fnt,tag=f'addbind{n}')
+
+            self.plugs_list.create_rectangle(n*250+7+150,30,n*250+7+150+35,30+30,width=0,fill='#585858',tags=(f'infobind{n}','hl'))
+            self.plugs_list.create_image(n*250+7+160,37,image=icons.info,anchor=NW,tags=f'infobind{n}') 
+
+            self.plugs_list.tag_bind(f'infobind{n}','<Button-1>',lambda event, p=plug : self.about_plugin(p))
+
+            self.plugs_list.tag_bind(f'addbind{n}','<Button-1>',lambda event, p=plug : self.add_plugin(p))            
+            self.plugs_list.tag_bind(f'addbind{n}','<Enter>',self.curs_enter)  
+            self.plugs_list.tag_bind(f'addbind{n}','<Leave>',self.curs_leave)  
+            self.plugs_list.tag_bind(f'infobind{n}','<Enter>',self.curs_enter)  
+            self.plugs_list.tag_bind(f'infobind{n}','<Leave>',self.curs_leave)  
+
+    def curs_enter(self,event):
+        wid=event.widget
+        x = wid.canvasx(event.x)
+        y = wid.canvasy(event.y)
+        obj=wid.find_closest(x,y)
+        if 'hl' in wid.gettags(obj):
+            wid.itemconfigure(obj,fill='#606060')
+        self.root.config(cursor="hand2")
+
+    def curs_leave(self,event):
+        wid=event.widget
+        x = wid.canvasx(event.x)
+        y = wid.canvasy(event.y)
+        obj=wid.find_closest(x,y)
+        if 'hl' in wid.gettags(obj):
+            wid.itemconfigure(obj,fill='#585858')
+        self.root.config(cursor="arrow")
+
 
     def redraw_canvas(self):
         self.move_end()
@@ -567,6 +542,8 @@ class Gui:
 
 
     def add_plugin(self,plugin,new=True,sets=False):
+        label = Label(self.root, text="")
+        fnt =Font(font=label['font'])
         if self.app.is_start:return
         if new:
 
@@ -595,9 +572,8 @@ class Gui:
 
         else:
             act=plugin
-        win=PlugInCanvas(self,act)
-        if not act.plugin.need_config:
-            win.button_config['state']='disabled'
+
+
         if self.app.settings['vertical_nodes']:
             dx,dy=0,64/2
             dx1,dy1=125,0
@@ -605,29 +581,29 @@ class Gui:
             dx,dy=125,0
             dx1,dy1=0,65/2
 
-        self.main_canvas.create_window(
-            win.x,
-            win.y,
-            window=win.frame,
-            tags=(act.id, f'{str(act.id)}-wintag', 'wintag'),
-            width=250,
-            height=65,
-            anchor=CENTER,
-        )
+        # self.main_canvas.create_window(
+        #     win.x,
+        #     win.y,
+        #     window=win.frame,
+        #     tags=(act.id, f'{str(act.id)}-wintag', 'wintag'),
+        #     width=250,
+        #     height=65,
+        #     anchor=CENTER,
+        # )
 
-        self.main_canvas.create_image(
-            win.x - dx1,
-            win.y - dy1,
-            image=icons.drag if self.app.settings['vertical_nodes'] else icons.drag_h,
-            tags=(act.id, f'{str(act.id)}-move', 'movetag'),
-            anchor=CENTER,
-        )
+        # self.main_canvas.create_image(
+        #     win.x - dx1,
+        #     win.y - dy1,
+        #     image=icons.drag if self.app.settings['vertical_nodes'] else icons.drag_h,
+        #     tags=(act.id, f'{str(act.id)}-move', 'movetag'),
+        #     anchor=CENTER,
+        # )
 
 
         if act.plugin.category in ['process','output']:
             self.main_canvas.create_image(
-                win.x - dx,
-                win.y - dy,
+                act.x - dx,
+                act.y - dy,
                 image=icons.input_icon,
                 tags=(act.id, f'{str(act.id)}-output', 'inputtag'),
                 anchor=CENTER,
@@ -636,12 +612,55 @@ class Gui:
 
         if act.plugin.category in ['input','process']:
             self.main_canvas.create_image(
-                win.x + dx,
-                win.y + dy,
+                act.x + dx,
+                act.y + dy,
                 image=icons.output_icon,
                 tags=(act.id, f'{str(act.id)}-input', 'outputtag'),
                 anchor=CENTER,
             )
+
+
+
+        self.main_canvas.create_rectangle(act.x-125,act.y-33,act.x+125,act.y+33,outline='black',fill='#313131',tags=(act.id,f'{act.id}-wintag',f'{act.id}-main',f'{str(act.id)}-move', 'movetag'))
+        self.main_canvas.create_image(act.x-125+7,act.y-33+16,image=act.plugin.icon,anchor=NW,tags=(act.id,f'{str(act.id)}-move', 'movetag'))
+
+        self.main_canvas.create_text(act.x-125+7+60,act.y-33+7,text=act.name[:22],width=150,anchor=NW,fill='white',font=fnt,tags=(act.id,))
+        self.main_canvas.create_image(act.x-125+7+40,act.y-33+7,image=icons.__getattr__(act.plugin.category),anchor=NW,tags=(act.id,))  
+
+
+        self.main_canvas.create_image(act.x-125+7+215,act.y-33+7,image=icons.rename,anchor=NW,tags=(act.id,'btn',f'renamebind{act.id}','need-del') ) 
+
+
+        self.main_canvas.create_text(act.x-125+7+40,act.y-33+30,text='',anchor=NW,fill='white',font=fnt,tags=(act.id,f'{act.id}-text'))
+
+        if act.plugin.need_config:
+            self.main_canvas.create_rectangle(act.x-125+7+40,act.y-33+30,act.x-125+7+40+100,act.y-33+30+30,width=0,fill='#585858',tags=(act.id,f'setsbind{act.id}','btn','need-del','hl'))
+            self.main_canvas.create_image(act.x-125+7+44+5,act.y-33+37,image=icons.config_action,anchor=NW,tags=(act.id,f'setsbind{act.id}','btn','need-del'))
+            self.main_canvas.create_text(act.x-125+7+65+5,act.y-33+37,text=_('Config'),anchor=NW,fill='white',font=fnt,tags=(act.id,f'setsbind{act.id}','btn','need-del'))
+        else:
+            self.main_canvas.create_rectangle(act.x-125+7+40,act.y-33+30,act.x-125+7+40+100,act.y-33+30+30,width=0,fill='#585858',stipple='gray25',tags=(act.id,'need-del'))
+            self.main_canvas.create_image(act.x-125+7+44+5,act.y-33+37,image=icons.config_action,anchor=NW,tags=(act.id,'need-del'))
+            self.main_canvas.create_text(act.x-125+7+65+5,act.y-33+37,text=_('Config'),anchor=NW,fill='white',font=fnt,tags=(act.id,'need-del'))           
+
+
+        self.main_canvas.create_rectangle(act.x-125+7+150,act.y-33+30,act.x-125+7+150+35,act.y-33+30+30,width=0,fill='#585858',tags=(act.id,f'favbind{act.id}','btn','need-del','hl'))
+        self.main_canvas.create_image(act.x-125+7+160,act.y-33+37,image=icons.favorite,anchor=NW,tags=(act.id,f'favbind{act.id}','btn','need-del'))
+
+        self.main_canvas.create_rectangle(act.x-125+7+195,act.y-33+30,act.x-125+7+195+35,act.y-33+30+30,width=0,fill='#585858',tags=(act.id,f'delbind{act.id}','btn','need-del','hl'))
+        self.main_canvas.create_image(act.x-125+7+205,act.y-33+37,image=icons.trash_action,anchor=NW,tags=(act.id,f'delbind{act.id}','btn','need-del'))        
+
+        self.main_canvas.tag_bind(f'setsbind{act.id}','<Button-1>',lambda event, pid=act.id : self.config_action(pid))
+        self.main_canvas.tag_bind(f'favbind{act.id}','<Button-1>',lambda event, pid=act.id : self.favorite_action(pid))  
+        self.main_canvas.tag_bind(f'delbind{act.id}','<Button-1>',lambda event, pid=act.id : self.delete_action(pid))   
+
+        self.main_canvas.tag_bind(f'renamebind{act.id}','<Button-1>',lambda event, pid=act.id : self.rename_action(act))  
+
+        self.main_canvas.tag_bind('btn','<Enter>',self.curs_enter)  
+        self.main_canvas.tag_bind('btn','<Leave>',self.curs_leave)  
+
+
+
+
 
 
         self.main_canvas.tag_bind('inputtag',"<Button-1>",self.line_start)
@@ -683,7 +702,7 @@ class Gui:
         )
 
 
-        self.main_canvas.tag_raise('movetag','wintag')
+        #self.main_canvas.tag_raise('movetag','wintag')
 
 
 
@@ -765,9 +784,10 @@ class Gui:
         self.main_canvas.move(tag,event.x-self.last_x,event.y-self.last_y)
         self.last_x=event.x
         self.last_y=event.y
-        tgs = self.main_canvas.find_withtag(f'{tag}-wintag')
+        tgs = self.main_canvas.find_withtag(f'{tag}-main')
         c=self.main_canvas.coords(tgs)
-        self.app.update_coords(tag,c[0],c[1])
+
+        self.app.update_coords(tag,c[0]+125,c[1]+65/2)
         self.update_lines()
 
     def move_end(self,event=None):
@@ -787,12 +807,22 @@ class Gui:
         for plug in self.app.plug_actions:
             from_uid=str(plug.id)
             for plug_to in plug.outputs:
-                from_dot=self.main_canvas.coords(from_uid)
-                to_dot=self.main_canvas.coords(plug_to)
+                from_dot=self.main_canvas.coords(f'{from_uid}-main')
                 if self.app.settings['vertical_nodes']:
-                    dx,dy=0,65/2+8
+                    print(from_dot)
+                    from_dot=from_dot[0]+125,from_dot[1]+65
                 else:
-                    dx,dy=125+8,0
+                    from_dot=from_dot[0]+250,from_dot[1]+65/2                   
+
+                to_dot=self.main_canvas.coords(f'{plug_to}-main')
+                if self.app.settings['vertical_nodes']:                
+                    to_dot=to_dot[0]+125,to_dot[1]
+                else:
+                    to_dot=to_dot[0],to_dot[1]+65/2
+                if self.app.settings['vertical_nodes']:
+                    dx,dy=0,8
+                else:
+                    dx,dy=8,0
 
                 self.main_canvas.create_line(from_dot[0]+dx,from_dot[1]+dy,to_dot[0]-dx,to_dot[1]-dy,tags=('lines',plug_to),width=1.5,fill='#626567')
                 middle_x=from_dot[0]+(to_dot[0]-from_dot[0])/2
@@ -827,6 +857,7 @@ class Gui:
 
     def delete_action(self,uid):
         self.app.delete_action(uid)
+        self.curs_leave(event=None)
 
 
 
@@ -906,6 +937,41 @@ class Gui:
 
         self.app.config_action(uid,frame)
 
+
+    def rename_action(self,plugin):
+        self.set_top_w=Toplevel(self.root)
+        self.center_window(self.set_top_w)
+        dark_title_bar(self.set_top_w)
+        win=self.set_top_w
+        win.title(_('Rename')+': '+plugin.name)
+        win.tk.call(
+            'wm',
+            'iconphoto',
+            win._w,
+            PhotoImage(file=f'{str(plugin.path)}/icon.png'),
+        )
+
+        win.focus_force()
+        frame=Labelframe(win,text=_('New name...'))
+        frame.pack(fill=X,padx=5,pady=5)
+        self.new_name_var=StringVar()
+        self.new_name_var.set(plugin.name)
+        e=Entry(frame,width=30,textvariable=self.new_name_var)
+        e.pack(padx=5,pady=5)
+        actions=Frame(win)
+        actions.pack(fill=X,padx=5,pady=5)
+
+        Button(actions,text=_('Cancel'),image=icons.cancel,compound='left',command=self.cancel_settings).pack(side=RIGHT,padx=5,pady=5)
+        Button(actions,text=_('Save'),image=icons.done,compound='left',command=lambda:self.save_new_name(plugin)).pack(side=RIGHT,padx=5,pady=5)
+        e.focus()
+        e.icursor(END)
+
+    def save_new_name(self,plugin):
+        plugin.name=self.new_name_var.get()
+        self.set_top_w.destroy()
+        self.redraw_canvas()
+
+
     def favorite_action(self,uid):
         self.cur_favor_uid=uid
         plug=self.app.find_by_uid(uid)
@@ -975,9 +1041,8 @@ class Gui:
 
     def new_message(self,message):
         uid,msg=message
-        for plug in self.canv_runs:
-            if uid==plug.plugin.id:
-                plug.update_text(msg)
+        self.main_canvas.itemconfigure(f'{uid}-text', text=msg)
+
 
     def update_count(self,uid,count):
         for plug in self.canv_runs:
@@ -997,27 +1062,13 @@ class Gui:
 
     def start(self):
 
-        self.canv_runs=[]
-        for plug in self.app.plug_actions:
-            win=RunInCanvas(plug)
-            self.canv_runs.append(win)
-            self.main_canvas.create_window(
-                win.x,
-                win.y,
-                window=win.frame,
-                tags=(win.plugin.id, f'{str(win.plugin.id)}-runs', 'runs'),
-                width=300,
-                height=90,
-                anchor=CENTER,
-            )
-
-
+        self.main_canvas.delete('need-del')
         self.app.start()
 
     def stop(self):
-        self.main_canvas.delete('runs')
-        self.canv_runs=[]
+        #self.redraw_canvas()
         self.app.stop()
+        self.redraw_canvas()
 
     def check_configs(self):
         out_warn = [

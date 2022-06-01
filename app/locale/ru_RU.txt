@@ -42,3 +42,5 @@ Loaded plugins=Загружено плагинов
 Official site=Официальный сайт
 VK Group=Группа ВК
 Donate project!=Поддержки проект!
+Rename=Переименовать
+New name...=Новое имя...
