@@ -360,6 +360,11 @@ if __name__=='__main__':
         open_file=sys.argv[1]
         if '--start' in sys.argv or '-s' in sys.argv:
             startup_start=True
+    if '--remove-data' in sys.argv:
+        import shutil
+        sys.stderr.close()
+        shutil.rmtree(DATA_PATH,ignore_errors=True)
+        sys.exit(0)
 
     import threading
     import json

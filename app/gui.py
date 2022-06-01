@@ -281,7 +281,6 @@ class Gui:
 
 
     def plugs_scroll(self,event):
-        print(event.delta)
         self.plugs_list.xview("scroll",int(-1*(event.delta/120)),"units")
         return "break" 
 
@@ -861,8 +860,7 @@ class Gui:
                 points=[]
                 for p in ret:
                     points.extend(p)
-                self.main_canvas.create_line(*points,smooth=True,width=1.5,fill='#626567',tags=('lines',plug_to))
-
+                self.main_canvas.create_line(*points,smooth=True,width=2,fill='#626567',tags=('lines',plug_to))
 
 
 
@@ -878,6 +876,8 @@ class Gui:
                     tags=('lines', 'delete_line', f'{from_uid}:{plug_to}'),
                     anchor=CENTER,
                 )
+
+        self.main_canvas.tag_lower('lines')
 
         self.main_canvas.tag_bind('delete_line',"<Enter>",self.delete_line_cursor_start)
         self.main_canvas.tag_bind('delete_line',"<Leave>",self.delete_line_cursor_end)
