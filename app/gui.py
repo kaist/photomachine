@@ -305,10 +305,7 @@ class Gui:
         win.attributes('-toolwindow', True)
         win.transient(self.root)
 
-        """
-        centers a tkinter window
-        :param win: the main window or Toplevel window to center
-        """
+
         win.update_idletasks()
         width = win.winfo_width()
         frm_width = win.winfo_rootx() - win.winfo_x()
@@ -592,23 +589,7 @@ class Gui:
             dx,dy=125,0
             dx1,dy1=0,65/2
 
-        # self.main_canvas.create_window(
-        #     win.x,
-        #     win.y,
-        #     window=win.frame,
-        #     tags=(act.id, f'{str(act.id)}-wintag', 'wintag'),
-        #     width=250,
-        #     height=65,
-        #     anchor=CENTER,
-        # )
 
-        # self.main_canvas.create_image(
-        #     win.x - dx1,
-        #     win.y - dy1,
-        #     image=icons.drag if self.app.settings['vertical_nodes'] else icons.drag_h,
-        #     tags=(act.id, f'{str(act.id)}-move', 'movetag'),
-        #     anchor=CENTER,
-        # )
 
 
         if act.plugin.category in ['process','output']:
@@ -713,7 +694,6 @@ class Gui:
         )
 
 
-        #self.main_canvas.tag_raise('movetag','wintag')
 
 
 
@@ -754,7 +734,6 @@ class Gui:
         c = event.widget
         x = c.canvasx(event.x)
         y = c.canvasy(event.y)
-        #tag=self.main_canvas.gettags(event.widget.find_withtag("current"))
         obj=self.main_canvas.find_closest(x,y,halo=1)
         tag=self.main_canvas.gettags(obj)
         tp=None
@@ -771,8 +750,7 @@ class Gui:
                 else:
                     self.app.connect(self.new_line_uid,tag[0])
 
-            #self.main_canvas.coords(self.temp_line,self.temp_line_start[0],self.temp_line_start[1],event.x,event.y)
-            #self.root.config(cursor="tcross")
+
 
     def move_cursor_start(self,event):
         pass
@@ -864,8 +842,6 @@ class Gui:
 
 
 
-
-                #self.main_canvas.create_line(from_dot[0]+dx,from_dot[1]+dy,to_dot[0]-dx,to_dot[1]-dy,tags=('lines',plug_to),width=1.5,fill='#626567')
                 middle_x=ret[len(ret)//2][0]
                 middle_y=ret[len(ret)//2][1]
 

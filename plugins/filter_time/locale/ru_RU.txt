@@ -1,0 +1,9 @@
+[LANG]
+Filter by Time=Фильтр по времени
+Approve if shoot=Утвердить если снято
+days=дней
+hours=часов
+minutes=минут
+more that=больше чем
+less that=меньше чем
+ago=назад

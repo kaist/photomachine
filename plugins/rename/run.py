@@ -30,8 +30,6 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
                 for x in exif:
                     if ExifTags.TAGS[x]=='DateTime':
                         dt=exif[x]
-                        print(dt)
-                        sys.stdout.flush()
                         dt=datetime.strptime(dt, '%Y:%m:%d %H:%M:%S')
                         break
 

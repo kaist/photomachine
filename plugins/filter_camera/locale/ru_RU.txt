@@ -1,0 +1,4 @@
+[LANG]
+Filter by Camera/Lens=Фильтр Камера/Объектив
+Approve if contain=Утвердить если содержит
+See the help for the plugin for information.=Смотри помощь к плагину для получения информации.

@@ -40,6 +40,10 @@ def image_open(path=None,fp=None,just_metadata=False):
         loaded=True        
 
     exif = {e: t[e] for e in t}
+    try:
+        exif2=img.getexif().get_ifd(0x8769)
+        exif.update(exif2)
+    except:pass
     vars={'filename':filename,'exif':exif,'profile':icc_profile,'loaded':loaded,'xmp':xmp}
     return img,vars
 
