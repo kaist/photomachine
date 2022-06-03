@@ -4,14 +4,12 @@ import time
 import os
 import sys
 import io
+import shutil
 from app.utils import *
 
 
 @run_thread
 def run(store,settings,image,vars):
-	if settings['format'].startswith('pmi'):
-		settings['format']='pmi'
-		
 	if 'is_renamed' in vars:
 		pth=Path(settings['path'])/Path(vars['filename'])
 	else:
@@ -20,17 +18,16 @@ def run(store,settings,image,vars):
 	if not pth.parent.exists():
 		pth.parent.mkdir()	
 
+	if not ('original_filename' in vars):
+		return None,None,'No original for:\n'+str(pth.name)
+	try:shutil.copyfile(vars['original_filename'],pth)
+	except:
+		return None,None,'Copy error:\n'+str(pth.name)
+	if settings['delete']:
+		try:Path(vars['original_filename']).unlink()
+		except:pass
 
-	pth=pth.with_suffix('')
-	pth=pth.with_suffix('.'+settings['format'])
+	
 
-
-
-	if settings['format']=='pmi':
-		fp=to_pm(image,vars)
-		with open(pth,'wb') as fl:
-			fl.write(fp.read())
-	else:
-		image.save(pth,quality=90,optimize=True,exif=image.getexif(),icc_profile=vars.get('profile',None))
 	msg='Saved\n'+str(pth.name)
 	return None,None,msg

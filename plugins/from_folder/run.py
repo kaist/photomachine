@@ -31,6 +31,7 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
             try:img,vars=image_open(path=x,just_metadata=settings['metadata'])
             except:continue
             vars['count']=count
+            vars['original_filename']=x
 
             for o in output_q:
                 message=[self_id,'Load file {0} \n(count: {1})'.format(x.name,count)]

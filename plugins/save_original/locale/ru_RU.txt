@@ -1,0 +1,4 @@
+[LANG]
+Save original=Сохранить оригинал
+Select folder=Выбрать папку
+Delete original after saving (!!!)=Удалить оригинал после сохранения (!!!)

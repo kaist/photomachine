@@ -45,6 +45,7 @@ def run(store,settings,message_q,output_q,self_id,self_q=None):
             msg='New name:\n'+new_path.name
             message_q.put([self_id,msg])
             vars['filename']=new_path
+            vars['is_renamed']=True
             for o in output_q:
                 o.put([image.copy(),vars])
             counter+=1

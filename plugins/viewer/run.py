@@ -87,13 +87,14 @@ class Gui:
             dy=(y-self.image.size[1])/2
             self.canvas.create_image(dx+nx,dy,image=self.ph_image,tags=('image',),anchor=NW)
 
-            self.image2=PIL.Image.open(self.image_vars['filename'])
-
-            self.image2.thumbnail((nx,y),PIL.Image.ANTIALIAS)
-            self.ph_image2=PIL.ImageTk.PhotoImage(image=self.image2)
-            dx=(nx-self.image2.size[0])/2
-            dy=(y-self.image2.size[1])/2
-            self.canvas.create_image(dx,dy,image=self.ph_image2,tags=('image',),anchor=NW)
+            try:
+                self.image2=PIL.Image.open(self.image_vars['original_filename'])
+                self.image2.thumbnail((nx,y),PIL.Image.ANTIALIAS)
+                self.ph_image2=PIL.ImageTk.PhotoImage(image=self.image2)
+                dx=(nx-self.image2.size[0])/2
+                dy=(y-self.image2.size[1])/2
+                self.canvas.create_image(dx,dy,image=self.ph_image2,tags=('image',),anchor=NW)
+            except:pass
 
             self.canvas.create_text(10,10,text='Before: '+str(Path(self.image_vars['filename']).name),font=(20,),anchor=NW,width=300,tags=('text',),fill='white')
             self.canvas.create_text(10+nx,10,text='After: '+str(Path(self.image_vars['filename']).name),font=(20,),anchor=NW,width=300,tags=('text',),fill='white')
@@ -105,13 +106,16 @@ class Gui:
             dy=(ny-self.image.size[1])/2
             self.canvas.create_image(dx,dy+ny,image=self.ph_image,tags=('image',),anchor=NW)
 
-            self.image2=PIL.Image.open(self.image_vars['filename'])
+            try:
+                self.image2=PIL.Image.open(self.image_vars['original_filename'])
 
-            self.image2.thumbnail((x,ny),PIL.Image.ANTIALIAS)
-            self.ph_image2=PIL.ImageTk.PhotoImage(image=self.image2)
-            dx=(x-self.image2.size[0])/2
-            dy=(ny-self.image2.size[1])/2
-            self.canvas.create_image(dx,dy,image=self.ph_image2,tags=('image',),anchor=NW)               
+                self.image2.thumbnail((x,ny),PIL.Image.ANTIALIAS)
+                self.ph_image2=PIL.ImageTk.PhotoImage(image=self.image2)
+                dx=(x-self.image2.size[0])/2
+                dy=(ny-self.image2.size[1])/2
+                self.canvas.create_image(dx,dy,image=self.ph_image2,tags=('image',),anchor=NW)   
+            except:
+                pass            
 
             self.canvas.create_text(10,10,text='Before: '+str(Path(self.image_vars['filename']).name),font=(20,),anchor=NW,width=300,tags=('text',),fill='white')
             self.canvas.create_text(10,10+ny,text='After: '+str(Path(self.image_vars['filename']).name),font=(20,),anchor=NW,width=300,tags=('text',),fill='white')
