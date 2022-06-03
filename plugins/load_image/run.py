@@ -11,6 +11,9 @@ from app.utils import *
 def run(store,settings,image,vars):
     msg='Loading:\n'+Path(vars['filename']).name
     if not vars['loaded']:
-        image=Image.open(vars['filename'])
-        vars['loaded']=True
+        try:
+            image=Image.open(vars['original_filename'])
+            vars['loaded']=True
+        except:
+            return None,None,'Not loaded (skip):\n'+Path(vars['filename']).name
     return image,vars,msg
