@@ -106,16 +106,16 @@ h1 {
 }
   </style>
   </head>
-  <body>
+  <body style="background-image: url(bg.jpg);background-size: cover;">
 
 
 <div style="" id="nav" class="navbartop">
-    <div class="bottomtext"><img id="logotop" style="margin-top:00px;max-height: 55px; vertical-align: top;" src=""/><span id="text1" style="padding-left:10px; vertical-align: middle;"><span></div>
+    <div class="bottomtext"><img id="logotop" style="margin-top:00px;max-height: 110px; vertical-align: top;" src="logo.png"/><span id="text1" style="padding-left:10px; vertical-align: middle;">{{text}}<span></div>
  
 </div>
 
 
-  <div style="padding-top:70px;padding-bottom:50px;" class="your-class">
+  <div style="padding-top:120px;padding-bottom:50px;" class="your-class">
  
     
    
@@ -138,7 +138,6 @@ cid=cid[cid.length - 1];
 
 var show_time=2000;
 var cur_gallery=[];
-var is_demo=false;
 
 function  next(){
     $('.your-class').slick('slickNext');
@@ -148,11 +147,10 @@ function  next(){
 }
 
 function upd(){
-    if (is_demo){return;}
+
     var d = new Date();
-    console.log('upd');
     
-    $.getJSON( 'get_json/'+cid+'?'+d.getTime(), function( data ) {
+    $.getJSON( '/get_json', function( data ) {
         if (data.length!=cur_gallery.length){location.reload();}
     })
     
@@ -177,9 +175,7 @@ function init_user(){
 
                 
                 $.getJSON( '/get_json', function( data ) {
-     
-     
-          
+
                       for (var i in data.slice(0, 200)){
                                   $('.your-class').slick('slickAdd','<div><div class="wrap"><img src="'+data[i].img+'"></div></div>');
                       }    

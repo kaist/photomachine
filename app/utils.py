@@ -49,6 +49,8 @@ def image_open(path=None,fp=None,just_metadata=False):
 
 def to_pm(image,vars):
     img_fp=io.BytesIO()
+    if image.mode!='RGB':
+        image=image.convert('RGB')
     image.save(img_fp,format='jpeg',quality=90,exif=image.getexif(),icc_profile=vars.get('profile',None))
     img_len=img_fp.getbuffer().nbytes
     img_fp.seek(0)

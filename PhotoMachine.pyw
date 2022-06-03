@@ -1,7 +1,7 @@
 import sys,os
 sys.dont_write_bytecode=True
 from pathlib import Path
-VERSION='1.18'
+VERSION='1.20'
 PORTABLE=False
 DATA_PATH=Path('data') if PORTABLE else Path().home()/Path('.photomachine')
 os.environ['DATA_PATH']=str(DATA_PATH)

@@ -11,13 +11,16 @@
     <link rel="stylesheet" type="text/css" href="static/polaroid-gallery.css"/>
 
     <link rel="stylesheet" type="text/css" href="static/slick/slick.css"/>
-// Add the new slick-theme.css if you want the default styling
     <link rel="stylesheet" type="text/css" href="static/slick/slick-theme.css"/>
 </head>
-<body class="fullscreen">
+<body style="background-image: url(bg.jpg);background-size: cover;" class="fullscreen">
 
 
-
+    <div style="" id="nav" class="navbartop">
+        <img id="logotop" style="float: left;margin-top:00px;max-height: 120px; vertical-align: top;" src="logo.png"/>
+        <div style="background-color:rgba(0,0,0,.5);" class="bottomtext">{{text}}</div>
+     
+    </div>
 
 <div id="gallery" style="" class="fullscreen"></div>
 
@@ -26,7 +29,7 @@
     <div style="width:100%;" class="itms">
 
     </div>
-    <div style="background-color:rgba(0,0,0,.5);" id="text2" class="bottomtext"></div>
+
     <button style="display: none;"  id="preview">1</button>
     <button style="display: none;" id="next">2</button>
 </div>
@@ -38,12 +41,10 @@
 <script type="text/javascript" src="static/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="static/slick/slick.min.js"></script>
 <script>
-var cid=window.location.pathname.split('/');
-cid=cid[cid.length - 1];
+
 var show_time=2000;
-var cur_gallery=[];
-var is_demo=false;
-var last_data='';
+
+var cur_gallery;
 function  next(){
     $('#next').click();
 
@@ -61,19 +62,20 @@ function reload() {
     window.location.reload();
 }
 
+function updater(){
+                $.getJSON( 'get_json', function( data ) {
+                       if (data!=cur_gallery){
+                            reload();                    
+                       }
+                    }); 
+ 
 
-
+}
 
 function init_user(){
                 $.getJSON( 'get_json', function( data ) {
-
                        new polaroidGallery(data.slice(0, 200));
-                       cur_gallery=data;
-                       is_demo=false;
-                       setInterval(next,show_time);
-                       //setTimeout(reload,60*1000);
-                       
-                      //
+                       cur_gallery=data;        
  
                     }); 
     
@@ -84,8 +86,10 @@ function init_user(){
 
 window.onload = function () {
         init_user();
-      
- 
+
+
+        setInterval(updater,60*1000);      
+        setInterval(next,show_time);
 
 
         //setTimeout(r,5000);

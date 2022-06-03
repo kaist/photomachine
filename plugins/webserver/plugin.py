@@ -4,7 +4,7 @@ from pathlib import Path
 from tkinter import filedialog
 import time
 from app.utils import *
-
+import shutil
 from netifaces import interfaces, ifaddresses, AF_INET
 
 
@@ -81,7 +81,35 @@ class Plugin:
         self.info_var=StringVar()
         self.info_var.set('...')
         Label(frame,textvariable=self.info_var).grid(row=5,column=0,columnspan=3,padx=5,pady=5,sticky=EW)
+
+
+        Label(frame,text=_('Text at top')).grid(row=6,column=0,padx=5,pady=5,sticky=E)
+        self.text_var=StringVar(value=plug.settings.get('text',''))
+        Entry(frame,textvariable=self.text_var,width=60).grid(row=6,column=1,columnspan=2,padx=5,pady=5,sticky=W)
+
+        Label(frame,text=_('Logo')).grid(row=7,column=0,padx=5,pady=5,sticky=E)
+        self.logo_var=StringVar()
+        self.logo_entry=Entry(frame,state=DISABLED,textvariable=self.logo_var,width=40)
+        self.logo_var.set(plug.settings.get('logo',''))
+        self.logo_entry.grid(row=7,column=1,padx=5,pady=5)
+        Button(frame,text=_('Select image'),compound='left',image=self.f_image,command=self.select_logo).grid(row=7,column=2,padx=5,pady=5)
+
+
+        Label(frame,text=_('or a link to site')+'\n'+_('(a qr code will be generated)')).grid(row=8,column=0,padx=5,pady=5,sticky=E)
+        self.link_var=StringVar(value=plug.settings.get('link',''))
+        Entry(frame,textvariable=self.link_var,width=50).grid(row=8,column=1,columnspan=2,padx=5,pady=5,sticky=W)
+
+        Label(frame,text=_('Background')).grid(row=9,column=0,padx=5,pady=5,sticky=E)
+        self.bg_var=StringVar()
+        self.bg_entry=Entry(frame,state=DISABLED,textvariable=self.bg_var,width=40)
+        self.bg_var.set(plug.settings.get('bg',''))
+        self.bg_entry.grid(row=9,column=1,padx=5,pady=5)
+        Button(frame,text=_('Select image'),compound='left',image=self.f_image,command=self.select_bg).grid(row=9,column=2,padx=5,pady=5)
+
         self.upd_label()
+
+
+
 
     def force_int(self,varname,index,mode):
         var = getattr(self, f'{varname}_var')
@@ -98,6 +126,10 @@ class Plugin:
 
     def clean_db(self):
         self.store.image_list=[]
+        try:
+            shutil.rmtree(DATA_PATH/Path('webserver'))
+        except:pass
+
         self.clean_but['text']=_('Clear now')+' (0)'
 
     def save_config(self):
@@ -106,6 +138,10 @@ class Plugin:
         d['theme']=self.theme_var.get()
         d['external']=int(self.external_var.get())
         d['port']=int(self.port_var.get())
+        d['text']=self.text_var.get()
+        d['logo']=self.logo_var.get()
+        d['link']=self.link_var.get()
+        d['bg']=self.bg_var.get()
         return d
 
     def select_folder(self):
@@ -114,5 +150,12 @@ class Plugin:
         self.sframe.focus_force()
 
 
+    def select_logo(self):
+        d=filedialog.askopenfilename(filetypes=(('images','.jpg .png'),))
+        self.logo_var.set(d)
+        self.sframe.focus_force()
 
-
+    def select_bg(self):
+        d=filedialog.askopenfilename(filetypes=(('images','.jpg .png'),))
+        self.bg_var.set(d)
+        self.sframe.focus_force()

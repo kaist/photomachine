@@ -23,7 +23,9 @@ def pusher(store,output_q,self_id,message_q):
             time.sleep(0.01)
             continue
         store.cache=tarr
-        image,vars=from_pm(open((path/(Path(el).parts[-1])).with_suffix('.phi'),'rb'))
+        fp=open((path/(Path(el).parts[-1])).with_suffix('.phi'),'rb')
+        image,vars=from_pm(fp)
+        fp.close()
         for x in output_q:
             x.put([image.copy(),vars])
         try:((path/(Path(el).parts[-1])).with_suffix('.phi')).unlink()
@@ -38,7 +40,8 @@ def pusher(store,output_q,self_id,message_q):
 def run(store,settings,message_q,output_q,self_id,self_q=None):
     if settings['autoclean']:
         store.cache=[]
-        shutil.rmtree(path)
+        try:shutil.rmtree(path)
+        except:pass
     if not(path.exists()):
         path.mkdir()
 
