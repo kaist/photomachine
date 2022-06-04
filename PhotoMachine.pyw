@@ -91,6 +91,8 @@ class App:
 
         if open_file:
             self.load_state(open_file)
+            root.after(500,gui.redraw_canvas)
+
 
     def check_update(self):
         time.sleep(3)

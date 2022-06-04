@@ -101,6 +101,7 @@ class PlugAction:
 class Gui:
     def __init__(self,root):
         self.root=root
+        self.motion_type='canvas'
         self.root.option_add("*tearOff", False)
 
         style = Style(self.root)
@@ -238,6 +239,7 @@ class Gui:
 
 
         self.main_canvas.bind('<B1-Motion>',self.canv_motion)
+        self.main_canvas.bind('<ButtonPress-1>',self.canv_start_motion)
         self.main_canvas.bind('<ButtonRelease-1>',self.canv_release)        
         self.main_canvas.pack()
 
@@ -250,7 +252,7 @@ class Gui:
 
 
         self.root.after(100,self.update_ps)
-        self.root.after(2500,self.dis_splash)
+        self.root.after(2000,self.dis_splash)
   
 
     def update_pstext(self,cpu,mem):
@@ -522,6 +524,8 @@ class Gui:
         for plug in self.app.plug_actions:
             self.add_plugin(plug,new=False)
         self.update_lines()
+        self.move_end()
+        
         
 
     def round_rectangle(self,canv,x1, y1, x2, y2, radius=25, **kwargs):
@@ -693,6 +697,8 @@ class Gui:
             f'{str(act.id)}-output', "<Leave>", self.line_cursor_end
         )
 
+        self.move_end()
+
 
 
 
@@ -714,7 +720,21 @@ class Gui:
         self.temp_line=self.main_canvas.create_line(x,y,x,y,dash=(5,2),fill='#626567')
 
 
+    def canv_start_motion(self,event):
+        c = event.widget
+        x = c.canvasx(event.x)
+        y = c.canvasy(event.y)
+        if not self.main_canvas.find_overlapping(x-10,y-10,x+10,y+10):
+            self.motion_type='canvas'
+            self.main_canvas.scan_mark(event.x, event.y)
+        else:
+            self.motion_type='widget'
+        
+
     def canv_motion(self,event):
+        if self.motion_type=='canvas':
+            self.main_canvas.scan_dragto(event.x, event.y,gain=1)
+            return
         if self.new_line:
             c = event.widget
             x = c.canvasx(event.x)
@@ -734,7 +754,7 @@ class Gui:
         c = event.widget
         x = c.canvasx(event.x)
         y = c.canvasy(event.y)
-        obj=self.main_canvas.find_closest(x,y,halo=1)
+        obj=self.main_canvas.find_closest(x,y,halo=0)
         tag=self.main_canvas.gettags(obj)
         tp=None
         if tag and tag[0]!=self.new_line_uid:
@@ -767,6 +787,7 @@ class Gui:
         self.root.config(cursor="arrow")
 
     def move_click(self,event):
+        self.motion_type='widget'
         self.last_x=event.x
         self.last_y=event.y
 
@@ -858,6 +879,7 @@ class Gui:
         self.main_canvas.tag_bind('delete_line',"<Enter>",self.delete_line_cursor_start)
         self.main_canvas.tag_bind('delete_line',"<Leave>",self.delete_line_cursor_end)
         self.main_canvas.tag_bind('delete_line',"<Button-1>",self.delete_line_action)   
+
             
 
     def delete_line_cursor_start(self,event):
