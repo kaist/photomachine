@@ -378,10 +378,11 @@ if __name__=='__main__':
     import locale
     import requests
     root=Tk()
-    root.withdraw()
+    #root.withdraw()
     gui=Gui(root)
     app=App(gui,open_file=open_file,startup_start=startup_start)
     root.protocol("WM_DELETE_WINDOW", app.on_closing)
+
     root.mainloop()
 
 

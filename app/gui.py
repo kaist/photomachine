@@ -1,3 +1,4 @@
+import sys
 import uuid
 import os
 import ctypes as ct
@@ -32,6 +33,7 @@ class Icons:
 icons=Icons()
 
 def dark_title_bar(window):
+    if sys.platform!='win32':return
     window.update()
     DWMWA_USE_IMMERSIVE_DARK_MODE = 20
     set_window_attribute = ct.windll.dwmapi.DwmSetWindowAttribute
@@ -113,7 +115,8 @@ class Gui:
 
         dark_title_bar(self.root)
         self.root.tk.call('wm', 'iconphoto', self.root._w, PhotoImage(file='app/icons/stream.png'))
-        self.root.state('zoomed')
+        try:self.root.state('zoomed')
+        except:self.root.attributes('-zoomed', True)
         self.root.title('PhotoMachine')
         scale=self.root.winfo_fpixels('1i')/72
         self.root.tk.call('tk', 'scaling', scale)
@@ -304,7 +307,8 @@ class Gui:
 
     def center_window(self,win):
         win.resizable(0,0)
-        win.attributes('-toolwindow', True)
+        try:win.attributes('-toolwindow', True)
+        except:pass
         win.transient(self.root)
 
 

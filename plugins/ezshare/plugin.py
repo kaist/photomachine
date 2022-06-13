@@ -17,8 +17,11 @@ try:
 except ImportError:
     DEVNULL = os.open(os.devnull, os.O_RDWR)
 
-startupinfo = subprocess.STARTUPINFO()
-startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+try:
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+except:
+    startupinfo=None
 
 
 class Plugin:
