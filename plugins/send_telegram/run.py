@@ -16,7 +16,7 @@ def run(store,settings,image,vars):
     fp.seek(0)
     files = {'image': fp}
     values = {'fname':vars['filename'],'caption':settings['caption'],'key':settings['key'],'asdoc':settings['asdoc']}
-    r = requests.post('https://machine.zalomskij.ru/telegram/bot_sendphoto/', files=files, data=values)
+    r = requests.post('https://photo-machine.ru/telegram/bot_sendphoto/', files=files, data=values)
     resp=json.loads(r.text)
     msg='Sent to telegram:\n'+str(Path(vars['filename']).name)
     return None,None,msg

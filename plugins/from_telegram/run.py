@@ -8,7 +8,7 @@ import websockets
 import asyncio
 import json
 import requests
-WEBSOCKET_URI = "ws://machine.zalomskij.ru:8001/ws/telegram/"
+WEBSOCKET_URI = "ws://photo-machine.ru:8001/ws/telegram/"
 
 
 async def start_socket(settings,message_q,output_q,self_id):
