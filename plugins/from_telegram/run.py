@@ -34,13 +34,13 @@ async def start_socket(settings,message_q,output_q,self_id):
             await start_socket(settings,message_q,output_q,self_id)
             break
         sys.stdout.flush()
+        sys.stdout.flush()
         r=requests.get(message['url'], stream=True)
         r.raw.decode_content = True
-        try:img,vars=image_open(path=message['filename'],fp=r.raw,just_metadata=False)
+        try:img,vars=image_open(path=Path(message['filename']),fp=r.raw,just_metadata=False)
         except:continue
-        vars['count']=count
         for o in output_q:
-            o.put([img.copy(),{'filename':message['filename'],'exif':exif}])
+            o.put([img.copy(),vars])
 
         await asyncio.sleep(0.1)
 
