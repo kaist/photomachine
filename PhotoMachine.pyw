@@ -24,7 +24,8 @@ if not DATA_PATH.exists():
 from importlib.machinery import SourceFileLoader
 from app.utils import PluginStore,DATA_PATH
 import multiprocessing
-
+if sys.platform!='win32':
+    multiprocessing.set_start_method("spawn", force=True)
 
 
 
@@ -322,7 +323,8 @@ class App:
         
 
     def on_closing(self):
-        self.stop()
+        try:self.stop()
+        except:pass
         self.app_run=False
         root.destroy()
 
@@ -371,7 +373,8 @@ if __name__=='__main__':
     import threading
     import json
     import time
-    import psutil
+    if sys.platform!='darwin':
+        import psutil
     import pickle
     from tkinter import Tk
     from app.gui import *

@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 import PIL
 import time
@@ -8,7 +9,8 @@ from pathlib import Path
 from tkinter import *
 from tkinter.ttk import *
 import threading
-import ctypes as ct
+try:import ctypes as ct
+except:pass
 import tkinterDnD
 import queue
 root=tkinterDnD.Tk()  
@@ -17,6 +19,7 @@ root.title('Drop files')
 q=queue.Queue()
 
 def dark_title_bar(window):
+    if sys.platform!='win32':return
     window.update()
     DWMWA_USE_IMMERSIVE_DARK_MODE = 20
     set_window_attribute = ct.windll.dwmapi.DwmSetWindowAttribute

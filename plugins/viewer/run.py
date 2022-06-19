@@ -9,7 +9,8 @@ from pathlib import Path
 from tkinter import *
 from tkinter.ttk import *
 import threading
-import ctypes as ct
+try:import ctypes as ct
+except:pass
 
 
 root=Tk()
@@ -18,6 +19,7 @@ root.title('Viewer')
 
 
 def dark_title_bar(window):
+    if sys.platform!='win32':return
     window.update()
     DWMWA_USE_IMMERSIVE_DARK_MODE = 20
     set_window_attribute = ct.windll.dwmapi.DwmSetWindowAttribute
@@ -41,12 +43,12 @@ class Gui:
         self.settings=settings
         dark_title_bar(self.root)
         if self.fs:
-
             self.root.attributes("-fullscreen", True)
 
 
         self.root.tk.call('wm', 'iconphoto', self.root._w, PhotoImage(file=str(self.cur_folder/'icon.png')))
-        self.root.state('zoomed')
+        try:self.root.state('zoomed')
+        except:self.root.attributes('-zoomed', True)
         self.root.title('Viewer')
         scale=self.root.winfo_fpixels('1i')/72
         self.root.tk.call('tk', 'scaling', scale)

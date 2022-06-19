@@ -140,12 +140,13 @@ class Gui:
         Button(self.session_frame,command=self.new_state,width=1,image=icons.new,compound='left').pack(side=LEFT,padx=5,pady=5)
         Button(self.session_frame,text=_('Save'),command=self.save_state,image=icons.save,compound='left').pack(side=LEFT,padx=5,pady=5)
         Button(self.session_frame,text=_('Save As...'),command=self.save_as_state,image=icons.save_as,compound='left').pack(side=LEFT,padx=5,pady=5)        
-        Button(self.session_frame,text=_('Open'),command=self.load_state,image=icons.open_file,compound='left').pack(side=LEFT,padx=5,pady=5)  
+        Button(self.session_frame,text=_('Open'),command=self.load_state,image=icons.open_file,compound='left').pack(side=LEFT,padx=5,pady=5)
 
-        misc_frame=Labelframe(self.top_frame,text=_('Photomachine'))
-        misc_frame.pack(padx=50,pady=5,side=LEFT)
-        self.ps_label=Label(misc_frame,wraplength=200)
-        self.ps_label.pack(side=LEFT,padx=5,pady=5)
+        if not sys.platform=='darwin':
+            misc_frame=Labelframe(self.top_frame,text=_('Photomachine'))
+            misc_frame.pack(padx=50,pady=5,side=LEFT)
+            self.ps_label=Label(misc_frame,wraplength=200)
+            self.ps_label.pack(side=LEFT,padx=5,pady=5)
 
         Button(misc_frame,image=icons.settings,width=1,compound='left',command=self.config_action).pack(side=LEFT,padx=5,pady=5)
         Button(misc_frame,image=icons.help,width=1,compound='left',command=self.about_plugin).pack(side=LEFT,padx=5,pady=5)        
@@ -254,7 +255,8 @@ class Gui:
 
 
 
-        self.root.after(100,self.update_ps)
+        if not sys.platform=='darwin':
+            self.root.after(100,self.update_ps)
         self.root.after(2000,self.dis_splash)
   
 
@@ -976,6 +978,8 @@ class Gui:
         actions.pack(fill=X,padx=5,pady=5)
         Button(actions,text=_('Cancel'),image=icons.cancel,compound='left',command=self.cancel_settings).pack(side=RIGHT,padx=5,pady=5)
         Button(actions,text=_('Save'),image=icons.done,compound='left',command=lambda:self.save_config(uid)).pack(side=RIGHT,padx=5,pady=5)
+        self.root.update_idletasks()
+        self.set_top_w.update()    
 
 
 
